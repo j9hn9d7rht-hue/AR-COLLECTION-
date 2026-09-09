@@ -17,17 +17,14 @@
   --muted:#aaa;
   --line:#272727;
 }
-
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-
 body{
   margin:0;
   background:var(--black);
-  color:var(--white);
+  color:white;
   font-family:Arial,Helvetica,sans-serif;
 }
-
 header{
   position:sticky;
   top:0;
@@ -40,26 +37,22 @@ header{
   align-items:center;
   justify-content:space-between;
 }
-
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
 }
-
 .brand img{
   width:58px;
   height:58px;
   object-fit:contain;
 }
-
 .brand-text{
   color:var(--gold2);
   font-size:20px;
   font-weight:900;
   letter-spacing:3px;
 }
-
 nav a{
   color:#fff;
   text-decoration:none;
@@ -68,9 +61,7 @@ nav a{
   font-weight:bold;
   letter-spacing:1px;
 }
-
 nav a:hover{color:var(--gold2)}
-
 .hero{
   min-height:88vh;
   display:flex;
@@ -84,7 +75,6 @@ nav a:hover{color:var(--gold2)}
     radial-gradient(circle at 50% 35%,rgba(212,175,55,.18),transparent 35%),
     linear-gradient(180deg,#0b0b0b,#030303);
 }
-
 .hero:before{
   content:"";
   position:absolute;
@@ -93,12 +83,10 @@ nav a:hover{color:var(--gold2)}
   border:1px solid rgba(212,175,55,.18);
   border-radius:50%;
 }
-
 .hero-content{
   position:relative;
   z-index:2;
 }
-
 .hero-logo{
   width:180px;
   height:180px;
@@ -106,23 +94,19 @@ nav a:hover{color:var(--gold2)}
   margin-bottom:25px;
   filter:drop-shadow(0 0 25px rgba(212,175,55,.22));
 }
-
 .hero h1{
   margin:0;
   font-size:clamp(42px,9vw,88px);
   letter-spacing:7px;
   font-weight:900;
 }
-
 .hero h1 span{color:var(--gold2)}
-
 .hero p{
   color:#ddd;
   letter-spacing:5px;
   font-size:13px;
   margin:22px 0 35px;
 }
-
 .btn{
   display:inline-block;
   padding:15px 34px;
@@ -133,64 +117,52 @@ nav a:hover{color:var(--gold2)}
   letter-spacing:1px;
   transition:.3s;
 }
-
 .btn:hover{
   background:var(--gold);
   color:#000;
-  box-shadow:0 0 25px rgba(212,175,55,.3);
 }
-
 section{
   max-width:1200px;
   margin:auto;
   padding:85px 20px;
 }
-
 .title{
   text-align:center;
   margin-bottom:45px;
 }
-
 .title small{
   color:var(--gold);
   letter-spacing:4px;
   font-size:11px;
 }
-
 .title h2{
   margin:10px 0 0;
   font-size:34px;
   letter-spacing:3px;
 }
-
 .products{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:25px;
 }
-
 .product{
   background:linear-gradient(145deg,#151515,#0b0b0b);
   border:1px solid var(--line);
   overflow:hidden;
   transition:.35s;
 }
-
 .product:hover{
   transform:translateY(-8px);
   border-color:var(--gold);
   box-shadow:0 15px 45px rgba(0,0,0,.5);
 }
-
-.product img,
-.no-image{
+.product img,.no-image{
   width:100%;
   height:330px;
   object-fit:cover;
   display:block;
   background:#111;
 }
-
 .no-image{
   display:flex;
   align-items:center;
@@ -198,35 +170,56 @@ section{
   color:#555;
   letter-spacing:3px;
 }
-
 .info{padding:23px}
-
 .info h3{
   margin:0 0 10px;
   font-size:21px;
   letter-spacing:1px;
 }
-
 .description{
   color:var(--muted);
   font-size:14px;
   line-height:1.6;
   min-height:44px;
 }
-
 .price{
   color:var(--gold2);
   font-size:22px;
   font-weight:bold;
   margin-top:18px;
 }
-
 .stock{
   color:#888;
   font-size:13px;
   margin-top:8px;
 }
-
+.sizes-title{
+  color:#ddd;
+  font-size:12px;
+  margin-top:18px;
+  margin-bottom:9px;
+  letter-spacing:1px;
+  font-weight:bold;
+}
+.sizes{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.size{
+  border:1px solid #555;
+  background:#0a0a0a;
+  color:#ddd;
+  padding:7px 10px;
+  font-size:11px;
+  cursor:pointer;
+}
+.size.active{
+  background:var(--gold);
+  color:#000;
+  border-color:var(--gold);
+  font-weight:bold;
+}
 .view-btn{
   width:100%;
   margin-top:18px;
@@ -238,12 +231,10 @@ section{
   letter-spacing:1px;
   cursor:pointer;
 }
-
 .view-btn:hover{
   background:var(--gold);
   color:#000;
 }
-
 .about-box{
   max-width:800px;
   margin:auto;
@@ -252,12 +243,10 @@ section{
   line-height:1.9;
   font-size:16px;
 }
-
 .contact{
   border-top:1px solid var(--line);
   text-align:center;
 }
-
 footer{
   border-top:1px solid var(--line);
   text-align:center;
@@ -266,55 +255,23 @@ footer{
   font-size:12px;
   letter-spacing:1px;
 }
-
 .loading,.empty,.error{
   text-align:center;
   padding:45px;
   color:#888;
 }
-
 .error{color:#ff7777}
 
 @media(max-width:650px){
-
   header{padding:10px 15px}
-
-  .brand img{
-    width:45px;
-    height:45px;
-  }
-
-  .brand-text{
-    font-size:14px;
-    letter-spacing:2px;
-  }
-
-  nav a{
-    margin-left:8px;
-    font-size:9px;
-  }
-
+  .brand img{width:45px;height:45px}
+  .brand-text{font-size:14px;letter-spacing:2px}
+  nav a{margin-left:8px;font-size:9px}
   .hero{min-height:82vh}
-
-  .hero-logo{
-    width:145px;
-    height:145px;
-  }
-
-  .hero h1{
-    font-size:42px;
-    letter-spacing:4px;
-  }
-
-  .hero p{
-    font-size:10px;
-    letter-spacing:3px;
-  }
-
-  .product img,
-  .no-image{
-    height:290px;
-  }
+  .hero-logo{width:145px;height:145px}
+  .hero h1{font-size:42px;letter-spacing:4px}
+  .hero p{font-size:10px;letter-spacing:3px}
+  .product img,.no-image{height:290px}
 }
 </style>
 </head>
@@ -337,37 +294,25 @@ footer{
 
 <section class="hero" id="home">
   <div class="hero-content">
-
     <img class="hero-logo" src="logo.png" alt="AR Collection">
-
     <h1>AR <span>COLLECTION</span></h1>
-
     <p>PREMIUM MEN'S FASHION • ROYAL STYLE</p>
-
     <a class="btn" href="#shop">EXPLORE COLLECTION</a>
-
   </div>
 </section>
 
 <section id="shop">
-
   <div class="title">
     <small>AR COLLECTION</small>
     <h2>OUR COLLECTION</h2>
   </div>
 
-  <div id="loading" class="loading">
-    Loading collection...
-  </div>
-
+  <div id="loading" class="loading">Loading collection...</div>
   <div id="error" class="error"></div>
-
   <div id="products" class="products"></div>
-
 </section>
 
 <section id="about">
-
   <div class="title">
     <small>OUR STORY</small>
     <h2>ABOUT AR COLLECTION</h2>
@@ -381,11 +326,9 @@ footer{
       fashion essentials designed for a confident style.
     </p>
   </div>
-
 </section>
 
 <section id="contact" class="contact">
-
   <div class="title">
     <small>GET IN TOUCH</small>
     <h2>CONTACT</h2>
@@ -397,7 +340,6 @@ footer{
       please contact AR Collection directly.
     </p>
   </div>
-
 </section>
 
 <footer>
@@ -405,10 +347,9 @@ footer{
 </footer>
 
 <script>
-
 const SUPABASE_URL="https://zlbezexsphxoqaldmbyg.supabase.co";
 
-const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmV6ZXhzcGh4b3FhbGRtYnlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTYwNjYsImV4cCI6MjEwNDQzMjA2Nn0.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmV6ZXNwaHhvcWFsZG1ieWciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODg1NjA2NiwiZXhwIjoyMTA0NDMyMDY2fQ.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
 
 const supabaseClient=window.supabase.createClient(
   SUPABASE_URL,
@@ -426,6 +367,11 @@ function escapeHTML(value){
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
+}
+
+function getSizes(product){
+  if(!Array.isArray(product.sizes)) return [];
+  return product.sizes.filter(Boolean);
 }
 
 async function loadProducts(){
@@ -457,13 +403,30 @@ async function loadProducts(){
     return;
   }
 
-  productsBox.innerHTML=data.map(product=>{
+  productsBox.innerHTML=data.map((product,index)=>{
 
     const image=product.image_url
       ? escapeHTML(product.image_url)
       :"";
 
     const stock=Number(product.stock||0);
+    const sizes=getSizes(product);
+
+    const sizesHTML=sizes.length
+      ? `
+        <div class="sizes-title">SELECT SIZE</div>
+        <div class="sizes" id="sizes-${index}">
+          ${sizes.map((size,sizeIndex)=>`
+            <button
+              type="button"
+              class="size ${sizeIndex===0?"active":""}"
+              onclick="selectSize(${index},'${escapeHTML(size)}')">
+              ${escapeHTML(size)}
+            </button>
+          `).join("")}
+        </div>
+      `
+      : "";
 
     return `
       <article class="product">
@@ -494,13 +457,11 @@ async function loadProducts(){
             }
           </div>
 
+          ${sizesHTML}
+
           <button
             class="view-btn"
-            onclick="showProduct(
-              '${escapeHTML(product.name)}',
-              '${escapeHTML(product.description||"")}',
-              '${escapeHTML(product.price)}'
-            )">
+            onclick="showProduct(${index},'${escapeHTML(product.name)}','${escapeHTML(product.description||"")}','${escapeHTML(product.price)}')">
             VIEW PRODUCT
           </button>
 
@@ -508,24 +469,46 @@ async function loadProducts(){
 
       </article>
     `;
-
   }).join("");
 }
 
-function showProduct(name,description,price){
+const selectedSizes={};
 
-  alert(
+function selectSize(productIndex,size){
+
+  selectedSizes[productIndex]=size;
+
+  const box=document.getElementById("sizes-"+productIndex);
+
+  if(!box) return;
+
+  box.querySelectorAll(".size").forEach(button=>{
+    button.classList.toggle(
+      "active",
+      button.textContent.trim()===size
+    );
+  });
+}
+
+function showProduct(index,name,description,price){
+
+  const size=selectedSizes[index] || "";
+
+  let message=
     name+
-    "\\n\\n"+
+    "\n\n"+
     description+
-    "\\n\\nPrice: Rs. "+
-    price
-  );
+    "\n\nPrice: Rs. "+
+    price;
 
+  if(size){
+    message+="\n\nSelected Size: "+size;
+  }
+
+  alert(message);
 }
 
 loadProducts();
-
 </script>
 
 </body>
