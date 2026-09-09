@@ -1,82 +1,490 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AR COLLECTION | Men's Fashion</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--bg:#080808;--panel:#111;--gold:#d4af37;--text:#f6f6f6;--muted:#aaa}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-header{padding:20px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #252525;position:sticky;top:0;background:rgba(8,8,8,.95);z-index:5}
-.logo{font-weight:900;letter-spacing:3px;color:var(--gold);font-size:23px}nav a{color:#ddd;text-decoration:none;margin-left:18px}
-.hero{text-align:center;min-height:62vh;display:grid;place-items:center;padding:70px 20px;background:radial-gradient(circle at center,#25200e 0,#0c0c0c 42%,#080808 75%);transition:.3s}
-.hero h1{font-size:clamp(45px,9vw,90px);letter-spacing:6px;margin:15px 0}.hero h1 span{color:var(--gold)}
-.hero p{letter-spacing:5px;color:var(--gold);font-size:12px}.sub{color:#aaa}
-section{max-width:1100px;margin:auto;padding:60px 6%}.title{text-align:center;margin-bottom:30px}.title p{color:var(--muted)}
-.empty{border:1px dashed #444;padding:65px 20px;text-align:center;border-radius:15px;background:rgba(255,255,255,.02)}
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.feature{padding:25px;background:var(--panel);border:1px solid #252525;border-radius:12px}.feature b{display:block;color:var(--gold);margin-bottom:8px}
-#editor{display:none;background:#101010;border:1px solid #333;max-width:700px;margin:25px auto;padding:22px;border-radius:14px}
-#editor.open{display:block}.row{margin:13px 0}.row label{display:block;color:#bbb;font-size:13px;margin-bottom:6px}.row input{width:100%;padding:11px;border-radius:8px;border:1px solid #444;background:#181818;color:white}
-button{padding:11px 16px;border:0;border-radius:8px;background:var(--gold);color:#111;font-weight:700;cursor:pointer;margin:5px 5px 0 0}.secondary{background:#292929;color:white}
-footer{text-align:center;padding:35px;color:#777;border-top:1px solid #222}
-@media(max-width:650px){.features{grid-template-columns:1fr}nav a{font-size:12px;margin-left:8px}}
+:root{
+  --bg:#080808;
+  --card:#111;
+  --gold:#d4af37;
+  --gold2:#f4d878;
+  --white:#fff;
+  --muted:#aaa;
+  --border:#292929;
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(8,8,8,.96);
+  border-bottom:1px solid var(--border);
+  padding:18px 6%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo{
+  color:var(--gold);
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:3px;
+}
+
+nav a{
+  color:#fff;
+  text-decoration:none;
+  margin-left:25px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+nav a:hover{
+  color:var(--gold);
+}
+
+.hero{
+  min-height:72vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:60px 20px;
+  background:
+    radial-gradient(circle at center,#28220d 0%,#080808 55%);
+}
+
+.hero h1{
+  margin:0;
+  font-size:clamp(45px,9vw,90px);
+  letter-spacing:6px;
+}
+
+.hero h1 span{
+  color:var(--gold);
+}
+
+.hero p{
+  color:var(--gold2);
+  letter-spacing:5px;
+  margin:20px 0 35px;
+}
+
+.btn{
+  display:inline-block;
+  padding:13px 28px;
+  border:1px solid var(--gold);
+  border-radius:5px;
+  color:var(--gold);
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.btn:hover{
+  background:var(--gold);
+  color:#000;
+}
+
+section{
+  max-width:1150px;
+  margin:auto;
+  padding:70px 20px;
+}
+
+.section-title{
+  text-align:center;
+  color:var(--gold);
+  letter-spacing:3px;
+  margin-bottom:40px;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:24px;
+}
+
+.product{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  transition:.25s;
+}
+
+.product:hover{
+  transform:translateY(-5px);
+  border-color:var(--gold);
+}
+
+.product img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+  display:block;
+  background:#181818;
+}
+
+.no-image{
+  height:280px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#181818;
+  color:#666;
+  letter-spacing:2px;
+}
+
+.info{
+  padding:20px;
+}
+
+.info h3{
+  margin:0 0 10px;
+  font-size:20px;
+}
+
+.description{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+  min-height:42px;
+}
+
+.price{
+  color:var(--gold2);
+  font-size:21px;
+  font-weight:bold;
+  margin-top:16px;
+}
+
+.stock{
+  color:#999;
+  font-size:13px;
+  margin-top:8px;
+}
+
+.view-btn{
+  width:100%;
+  margin-top:16px;
+  padding:12px;
+  border:1px solid var(--gold);
+  border-radius:5px;
+  background:transparent;
+  color:var(--gold);
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.view-btn:hover{
+  background:var(--gold);
+  color:#000;
+}
+
+.loading,
+.empty,
+.error{
+  text-align:center;
+  padding:45px 20px;
+  color:#999;
+}
+
+.error{
+  color:#ff7777;
+}
+
+.about{
+  text-align:center;
+  color:#aaa;
+  line-height:1.8;
+  max-width:750px;
+  margin:auto;
+}
+
+.contact{
+  text-align:center;
+  border-top:1px solid var(--border);
+}
+
+footer{
+  text-align:center;
+  padding:30px 15px;
+  border-top:1px solid var(--border);
+  color:#777;
+  font-size:13px;
+}
+
+@media(max-width:650px){
+  header{
+    padding:15px 18px;
+  }
+
+  .logo{
+    font-size:18px;
+  }
+
+  nav a{
+    margin-left:10px;
+    font-size:10px;
+  }
+
+  .hero{
+    min-height:65vh;
+  }
+
+  .product img,
+  .no-image{
+    height:250px;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<div class="logo" id="logo">AR COLLECTION</div>
-<nav><a href="#collection">Collection</a><a href="#about">About</a><a href="#" onclick="toggleEditor();return false">Customize</a></nav>
+  <div class="logo">AR COLLECTION</div>
+
+  <nav>
+    <a href="#home">HOME</a>
+    <a href="#shop">SHOP</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
 </header>
 
-<section class="hero" id="hero">
-<div>
-<p>MEN'S FASHION BRAND</p>
-<h1>AR <span>COLLECTION</span></h1>
-<div class="sub" id="tagline">Premium style. Your collection starts here.</div>
-</div>
+<section class="hero" id="home">
+  <h1>AR <span>COLLECTION</span></h1>
+  <p>MEN'S FASHION • PREMIUM STYLE</p>
+  <a class="btn" href="#shop">VIEW COLLECTION</a>
 </section>
 
-<div id="editor">
-<h2>Website Customize Panel</h2>
-<p style="color:#999">Yahan se basic changes karo. Save karne ke baad ye browser mein remember rahengi.</p>
-<div class="row"><label>Brand Name</label><input id="brandInput" value="AR COLLECTION"></div>
-<div class="row"><label>Tagline</label><input id="tagInput" value="Premium style. Your collection starts here."></div>
-<div class="row"><label>Website Background Color</label><input id="bgInput" type="color" value="#080808"></div>
-<div class="row"><label>Hero Background Color</label><input id="heroInput" type="color" value="#0c0c0c"></div>
-<div><button onclick="saveSettings()">Save Changes</button><button class="secondary" onclick="resetSettings()">Reset</button></div>
-</div>
+<section id="shop">
 
-<section id="collection">
-<div class="title"><h2>Our Collection</h2><p>Products will appear here when you are ready.</p></div>
-<div class="empty"><h3>Collection Coming Soon</h3><p>Yahan aap apni real shirts, trousers aur doosre products add kar sakte hain.</p></div>
+  <h2 class="section-title">OUR COLLECTION</h2>
+
+  <div id="loading" class="loading">
+    Loading collection...
+  </div>
+
+  <div id="error" class="error"></div>
+
+  <div id="products" class="products"></div>
+
 </section>
 
 <section id="about">
-<div class="title"><h2>The AR Standard</h2><p>Clean, premium and ready for your brand.</p></div>
-<div class="features">
-<div class="feature"><b>Premium Style</b>Black & gold fashion presentation.</div>
-<div class="feature"><b>Easy Customize</b>Header mein Customize par tap karke basic design change karein.</div>
-<div class="feature"><b>Mobile Ready</b>Phone aur computer dono ke liye responsive.</div>
-</div>
+
+  <h2 class="section-title">ABOUT AR COLLECTION</h2>
+
+  <div class="about">
+    <p>
+      AR Collection is a premium men's fashion brand focused on
+      modern style, quality and a royal look.
+      Explore our latest collection and discover your style.
+    </p>
+  </div>
+
 </section>
 
-<footer>© 2026 <span id="footerBrand">AR COLLECTION</span> — Men's Fashion Brand</footer>
+<section id="contact" class="contact">
+
+  <h2 class="section-title">CONTACT</h2>
+
+  <div class="about">
+    <p>
+      For product information and orders, please contact
+      AR Collection directly.
+    </p>
+  </div>
+
+</section>
+
+<footer>
+  © 2026 AR COLLECTION — MEN'S FASHION
+</footer>
 
 <script>
-const $=id=>document.getElementById(id);
-function toggleEditor(){$('editor').classList.toggle('open')}
-function saveSettings(){
- const s={brand:$('brandInput').value||'AR COLLECTION',tag:$('tagInput').value||'',bg:$('bgInput').value,hero:$('heroInput').value};
- localStorage.setItem('arSettings',JSON.stringify(s)); apply(s); alert('Changes saved!');
+
+const SUPABASE_URL =
+"https://zlbezexsphxoqaldmbyg.supabase.co";
+
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoienhiZXpleHNwaHhvcWFsZG1ieWciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODg1NjA2NiwiZXhwIjoyMTA0NDMyMDY2fQ.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+const productsBox =
+document.getElementById("products");
+
+const loading =
+document.getElementById("loading");
+
+const errorBox =
+document.getElementById("error");
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
 }
-function apply(s){
- $('logo').textContent=s.brand;$('footerBrand').textContent=s.brand;$('tagline').textContent=s.tag;
- document.documentElement.style.setProperty('--bg',s.bg);
- $('hero').style.background=`radial-gradient(circle at center,${s.hero} 0,#0c0c0c 45%,${s.bg} 78%)`;
+
+
+async function loadProducts(){
+
+  loading.style.display="block";
+  errorBox.style.display="none";
+
+  const { data, error } =
+    await supabaseClient
+      .from("products")
+      .select("*")
+      .order("created_at",{ascending:false});
+
+  loading.style.display="none";
+
+  if(error){
+
+    console.error(error);
+
+    errorBox.textContent =
+      "Collection load nahi ho rahi. Please try again.";
+
+    errorBox.style.display="block";
+
+    return;
+  }
+
+  if(!data || data.length===0){
+
+    productsBox.innerHTML=`
+      <div class="empty">
+        <h3>Collection Coming Soon</h3>
+        <p>Our new products will appear here soon.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  productsBox.innerHTML =
+    data.map(product=>{
+
+      const image =
+        product.image_url
+        ? escapeHTML(product.image_url)
+        : "";
+
+      const stock =
+        Number(product.stock || 0);
+
+      return `
+
+        <article class="product">
+
+          ${
+            image
+            ? `
+              <img
+                src="${image}"
+                alt="${escapeHTML(product.name)}"
+              >
+            `
+            : `
+              <div class="no-image">
+                AR COLLECTION
+              </div>
+            `
+          }
+
+          <div class="info">
+
+            <h3>
+              ${escapeHTML(product.name)}
+            </h3>
+
+            <div class="description">
+              ${escapeHTML(product.description || "")}
+            </div>
+
+            <div class="price">
+              Rs. ${escapeHTML(product.price)}
+            </div>
+
+            <div class="stock">
+              ${
+                stock > 0
+                ? "In Stock: " + stock
+                : "Currently Out of Stock"
+              }
+            </div>
+
+            <button
+              class="view-btn"
+              onclick="showProduct(
+                '${escapeHTML(product.name)}',
+                '${escapeHTML(product.description || "")}',
+                '${escapeHTML(product.price)}'
+              )"
+            >
+              VIEW PRODUCT
+            </button>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
+
 }
-function resetSettings(){localStorage.removeItem('arSettings');location.reload()}
-const saved=localStorage.getItem('arSettings');
-if(saved){const s=JSON.parse(saved);$('brandInput').value=s.brand;$('tagInput').value=s.tag;$('bgInput').value=s.bg;$('heroInput').value=s.hero;apply(s)}
+
+
+function showProduct(name,description,price){
+
+  alert(
+    name +
+    "\\n\\n" +
+    description +
+    "\\n\\nPrice: Rs. " +
+    price
+  );
+
+}
+
+
+loadProducts();
+
 </script>
+
 </body>
 </html>
