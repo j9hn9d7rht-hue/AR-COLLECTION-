@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AR COLLECTION | Admin Panel</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --bg:#080808;
+  --card:#111;
+  --gold:#d4af37;
+  --gold2:#f4d878;
+  --white:#fff;
+  --muted:#aaa;
+  --border:#292929;
+  --danger:#e05252;
+  --success:#58b77a;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+header{
+  background:#0d0d0d;
+  border-bottom:1px solid var(--border);
+  padding:18px 6%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.logo{
+  color:var(--gold);
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:3px;
+}
+
+.logout{
+  border:1px solid var(--gold);
+  background:transparent;
+  color:var(--gold);
+  padding:10px 16px;
+  border-radius:5px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.logout:hover{
+  background:var(--gold);
+  color:#000;
+}
+
+main{
+  max-width:1050px;
+  margin:auto;
+  padding:35px 18px 60px;
+}
+
+.login-box,
+.panel{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:25px;
+}
+
+.login-box{
+  max-width:430px;
+  margin:60px auto;
+}
+
+h1,h2{
+  color:var(--gold);
+}
+
+.login-box h1{
+  text-align:center;
+  font-size:26px;
+  letter-spacing:2px;
+}
+
+label{
+  display:block;
+  margin:17px 0 7px;
+  color:#ddd;
+  font-size:14px;
+}
+
+input,
+textarea{
+  width:100%;
+  padding:13px;
+  border-radius:6px;
+  border:1px solid #333;
+  background:#080808;
+  color:#fff;
+  outline:none;
+  font-size:15px;
+}
+
+input:focus,
+textarea:focus{
+  border-color:var(--gold);
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.primary{
+  width:100%;
+  margin-top:20px;
+  padding:13px;
+  border:1px solid var(--gold);
+  border-radius:6px;
+  background:var(--gold);
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.primary:hover{
+  background:var(--gold2);
+}
+
+.message{
+  margin-top:15px;
+  padding:12px;
+  border-radius:6px;
+  display:none;
+  font-size:14px;
+}
+
+.error{
+  color:#ff9999;
+  background:#2a1010;
+}
+
+.success{
+  color:#9ce5b5;
+  background:#102417;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.topbar h1{
+  margin:0;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.full{
+  grid-column:1 / -1;
+}
+
+.image-preview{
+  width:150px;
+  height:150px;
+  object-fit:cover;
+  border-radius:8px;
+  border:1px solid var(--border);
+  margin-top:12px;
+  display:none;
+}
+
+.products{
+  margin-top:30px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.product{
+  background:#0b0b0b;
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.product img{
+  width:100%;
+  height:230px;
+  object-fit:cover;
+  background:#171717;
+}
+
+.product-info{
+  padding:17px;
+}
+
+.product-info h3{
+  margin:0 0 8px;
+}
+
+.product-price{
+  color:var(--gold2);
+  font-size:19px;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+.product-stock{
+  color:#aaa;
+  font-size:13px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+.edit-btn,
+.delete-btn{
+  flex:1;
+  padding:10px;
+  border-radius:5px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.edit-btn{
+  border:1px solid var(--gold);
+  background:transparent;
+  color:var(--gold);
+}
+
+.delete-btn{
+  border:1px solid var(--danger);
+  background:transparent;
+  color:#ff7777;
+}
+
+.edit-btn:hover{
+  background:var(--gold);
+  color:#000;
+}
+
+.delete-btn:hover{
+  background:var(--danger);
+  color:#fff;
+}
+
+.cancel{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+  border:1px solid #555;
+  background:transparent;
+  color:#aaa;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.empty{
+  text-align:center;
+  color:#888;
+  padding:40px 10px;
+  border:1px dashed #444;
+  border-radius:8px;
+  grid-column:1 / -1;
+}
+
+.status{
+  color:#aaa;
+  margin:5px 0 0;
+  font-size:14px;
+}
+
+@media(max-width:650px){
+  header{
+    padding:15px 18px;
+  }
+
+  .logo{
+    font-size:17px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+
+  .topbar{
+    align-items:flex-start;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">AR COLLECTION</div>
+  <button id="logoutBtn" class="logout hidden">LOGOUT</button>
+</header>
+
+<main>
+
+<!-- LOGIN -->
+
+<section id="loginSection" class="login-box">
+
+  <h1>ADMIN LOGIN</h1>
+
+  <label for="email">Admin Email</label>
+  <input
+    id="email"
+    type="email"
+    placeholder="Enter admin email"
+    autocomplete="email"
+  >
+
+  <label for="password">Password</label>
+  <input
+    id="password"
+    type="password"
+    placeholder="Enter password"
+    autocomplete="current-password"
+  >
+
+  <button id="loginBtn" class="primary">
+    LOGIN
+  </button>
+
+  <div id="loginMessage" class="message"></div>
+
+</section>
+
+
+<!-- ADMIN -->
+
+<section id="adminSection" class="hidden">
+
+  <div class="topbar">
+    <div>
+      <h1>Admin Panel</h1>
+      <p class="status">
+        Manage your AR Collection products.
+      </p>
+    </div>
+  </div>
+
+
+  <div class="panel">
+
+    <h2 id="formTitle">Add New Product</h2>
+
+    <form id="productForm">
+
+      <div class="form-grid">
+
+        <div>
+          <label for="productName">
+            Product Name
+          </label>
+
+          <input
+            id="productName"
+            type="text"
+            placeholder="Example: Premium Black Shirt"
+            required
+          >
+        </div>
+
+
+        <div>
+          <label for="productPrice">
+            Price (PKR)
+          </label>
+
+          <input
+            id="productPrice"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="2999"
+            required
+          >
+        </div>
+
+
+        <div>
+          <label for="productStock">
+            Stock
+          </label>
+
+          <input
+            id="productStock"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="10"
+            required
+          >
+        </div>
+
+
+        <div>
+          <label for="productImage">
+            Product Image
+          </label>
+
+          <input
+            id="productImage"
+            type="file"
+            accept="image/*"
+          >
+
+          <img
+            id="imagePreview"
+            class="image-preview"
+            alt="Preview"
+          >
+        </div>
+
+
+        <div class="full">
+
+          <label for="productDescription">
+            Description
+          </label>
+
+          <textarea
+            id="productDescription"
+            placeholder="Write product details..."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="saveBtn"
+        type="submit"
+        class="primary"
+      >
+        ADD PRODUCT
+      </button>
+
+      <button
+        id="cancelBtn"
+        type="button"
+        class="cancel hidden"
+      >
+        CANCEL EDIT
+      </button>
+
+      <div id="formMessage" class="message"></div>
+
+    </form>
+
+  </div>
+
+
+  <div class="panel" style="margin-top:25px;">
+
+    <h2>Your Products</h2>
+
+    <div id="products" class="products">
+
+      <div class="empty">
+        Loading products...
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<script>
+
+/* ================================
+   SUPABASE CONNECTION
+================================ */
+
+const SUPABASE_URL =
+"https://zlbezexsphxoqaldmbyg.supabase.co";
+
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoienhiZXpleHNwaHhvcWFsZG1ieWciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODg1NjA2NiwiZXhwIjoyMTA0NDMyMDY2fQ.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+
+/* ================================
+   ELEMENTS
+================================ */
+
+const loginSection =
+document.getElementById("loginSection");
+
+const adminSection =
+document.getElementById("adminSection");
+
+const logoutBtn =
+document.getElementById("logoutBtn");
+
+const loginBtn =
+document.getElementById("loginBtn");
+
+const loginMessage =
+document.getElementById("loginMessage");
+
+const emailInput =
+document.getElementById("email");
+
+const passwordInput =
+document.getElementById("password");
+
+const productForm =
+document.getElementById("productForm");
+
+const productName =
+document.getElementById("productName");
+
+const productPrice =
+document.getElementById("productPrice");
+
+const productStock =
+document.getElementById("productStock");
+
+const productDescription =
+document.getElementById("productDescription");
+
+const productImage =
+document.getElementById("productImage");
+
+const imagePreview =
+document.getElementById("imagePreview");
+
+const productsBox =
+document.getElementById("products");
+
+const formMessage =
+document.getElementById("formMessage");
+
+const saveBtn =
+document.getElementById("saveBtn");
+
+const cancelBtn =
+document.getElementById("cancelBtn");
+
+const formTitle =
+document.getElementById("formTitle");
+
+
+let editingProduct = null;
+
+
+/* ================================
+   MESSAGES
+================================ */
+
+function showMessage(element,text,type){
+
+  element.textContent = text;
+  element.className =
+    "message " + type;
+
+  element.style.display = "block";
+
+}
+
+
+function hideMessage(element){
+
+  element.style.display = "none";
+
+}
+
+
+/* ================================
+   AUTH
+================================ */
+
+async function checkSession(){
+
+  const {
+    data:{
+      session
+    }
+  } =
+  await supabaseClient.auth.getSession();
+
+  if(session){
+
+    showAdmin();
+
+  }else{
+
+    showLogin();
+
+  }
+
+}
+
+
+function showAdmin(){
+
+  loginSection.classList.add("hidden");
+  adminSection.classList.remove("hidden");
+  logoutBtn.classList.remove("hidden");
+
+  loadProducts();
+
+}
+
+
+function showLogin(){
+
+  loginSection.classList.remove("hidden");
+  adminSection.classList.add("hidden");
+  logoutBtn.classList.add("hidden");
+
+}
+
+
+loginBtn.addEventListener(
+"click",
+async function(){
+
+  hideMessage(loginMessage);
+
+  const email =
+    emailInput.value.trim();
+
+  const password =
+    passwordInput.value;
+
+  if(!email || !password){
+
+    showMessage(
+      loginMessage,
+      "Email aur password dono enter karo.",
+      "error"
+    );
+
+    return;
+  }
+
+  loginBtn.disabled = true;
+  loginBtn.textContent = "LOGINNING...";
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient.auth.signInWithPassword({
+    email:email,
+    password:password
+  });
+
+
+  loginBtn.disabled = false;
+  loginBtn.textContent = "LOGIN";
+
+
+  if(error){
+
+    showMessage(
+      loginMessage,
+      "Login failed: " + error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(data.session){
+
+    showAdmin();
+
+  }
+
+});
+
+
+logoutBtn.addEventListener(
+"click",
+async function(){
+
+  await supabaseClient.auth.signOut();
+
+  editingProduct = null;
+
+  productForm.reset();
+
+  showLogin();
+
+});
+
+
+/* ================================
+   IMAGE PREVIEW
+================================ */
+
+productImage.addEventListener(
+"change",
+function(){
+
+  const file =
+    productImage.files[0];
+
+  if(!file){
+
+    imagePreview.style.display="none";
+    imagePreview.removeAttribute("src");
+
+    return;
+  }
+
+  if(!file.type.startsWith("image/")){
+
+    showMessage(
+      formMessage,
+      "Please select an image file.",
+      "error"
+    );
+
+    productImage.value="";
+    return;
+  }
+
+  const url =
+    URL.createObjectURL(file);
+
+  imagePreview.src=url;
+  imagePreview.style.display="block";
+
+});
+
+
+/* ================================
+   UPLOAD IMAGE
+================================ */
+
+async function uploadImage(file,userId){
+
+  if(!file){
+    return null;
+  }
+
+  const extension =
+    file.name.includes(".")
+    ? file.name.split(".").pop().toLowerCase()
+    : "jpg";
+
+  const fileName =
+    userId +
+    "/" +
+    Date.now() +
+    "-" +
+    Math.random().toString(36).substring(2) +
+    "." +
+    extension;
+
+
+  const {
+    error
+  } =
+  await supabaseClient
+    .storage
+    .from("products")
+    .upload(
+      fileName,
+      file,
+      {
+        cacheControl:"3600",
+        upsert:false,
+        contentType:file.type
+      }
+    );
+
+
+  if(error){
+
+    throw new Error(
+      "Image upload failed: " +
+      error.message
+    );
+
+  }
+
+
+  const {
+    data
+  } =
+  supabaseClient
+    .storage
+    .from("products")
+    .getPublicUrl(fileName);
+
+
+  return data.publicUrl;
+
+}
+
+
+/* ================================
+   ADD / UPDATE PRODUCT
+================================ */
+
+productForm.addEventListener(
+"submit",
+async function(event){
+
+  event.preventDefault();
+
+  hideMessage(formMessage);
+
+  const {
+    data:{
+      user
+    }
+  } =
+  await supabaseClient.auth.getUser();
+
+
+  if(!user){
+
+    showMessage(
+      formMessage,
+      "Session expired. Please login again.",
+      "error"
+    );
+
+    showLogin();
+    return;
+  }
+
+
+  const name =
+    productName.value.trim();
+
+  const description =
+    productDescription.value.trim();
+
+  const price =
+    Number(productPrice.value);
+
+  const stock =
+    Number(productStock.value);
+
+  const imageFile =
+    productImage.files[0];
+
+
+  if(!name){
+
+    showMessage(
+      formMessage,
+      "Product name enter karo.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(price < 0){
+
+    showMessage(
+      formMessage,
+      "Price valid hona chahiye.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(stock < 0){
+
+    showMessage(
+      formMessage,
+      "Stock valid hona chahiye.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  saveBtn.disabled=true;
+  saveBtn.textContent =
+    editingProduct
+    ? "UPDATING..."
+    : "ADDING...";
+
+
+  try{
+
+    let imageUrl =
+      editingProduct
+      ? editingProduct.image_url || ""
+      : "";
+
+
+    if(imageFile){
+
+      imageUrl =
+        await uploadImage(
+          imageFile,
+          user.id
+        );
+
+    }
+
+
+    if(editingProduct){
+
+      const {
+        error
+      } =
+      await supabaseClient
+        .from("products")
+        .update({
+          name:name,
+          description:description,
+          price:price,
+          stock:stock,
+          image_url:imageUrl
+        })
+        .eq(
+          "id",
+          editingProduct.id
+        );
+
+
+      if(error){
+        throw error;
+      }
+
+
+      showMessage(
+        formMessage,
+        "Product successfully updated.",
+        "success"
+      );
+
+    }else{
+
+      const {
+        error
+      } =
+      await supabaseClient
+        .from("products")
+        .insert({
+          name:name,
+          description:description,
+          price:price,
+          stock:stock,
+          image_url:imageUrl
+        });
+
+
+      if(error){
+        throw error;
+      }
+
+
+      showMessage(
+        formMessage,
+        "Product successfully added.",
+        "success"
+      );
+
+    }
+
+
+    resetForm();
+
+    loadProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+    showMessage(
+      formMessage,
+      error.message || "Something went wrong.",
+      "error"
+    );
+
+  }
+
+
+  saveBtn.disabled=false;
+
+});
+
+
+/* ================================
+   LOAD PRODUCTS
+================================ */
+
+async function loadProducts(){
+
+  productsBox.innerHTML =
+    `<div class="empty">Loading products...</div>`;
+
+
+  const {
+    data,
+    error
+  } =
+  await supabaseClient
+    .from("products")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+
+  if(error){
+
+    productsBox.innerHTML =
+      `<div class="empty">
+        Products load nahi ho rahe.<br><br>
+        ${escapeHTML(error.message)}
+      </div>`;
+
+    return;
+  }
+
+
+  if(!data || data.length===0){
+
+    productsBox.innerHTML =
+      `<div class="empty">
+        Abhi koi product nahi hai.<br>
+        Upar se apna first product add karo.
+      </div>`;
+
+    return;
+  }
+
+
+  productsBox.innerHTML =
+    data.map(product=>{
+
+      const image =
+        product.image_url
+        ? `<img
+             src="${escapeHTML(product.image_url)}"
+             alt="${escapeHTML(product.name)}"
+           >`
+        : `<div class="no-product-image"
+             style="
+               height:230px;
+               display:flex;
+               align-items:center;
+               justify-content:center;
+               color:#666;
+               background:#171717;
+             ">
+             AR COLLECTION
+           </div>`;
+
+
+      return `
+        <article
+          class="product"
+          data-id="${escapeHTML(product.id)}"
+        >
+
+          ${image}
+
+          <div class="product-info">
+
+            <h3>
+              ${escapeHTML(product.name)}
+            </h3>
+
+            <div class="product-price">
+              Rs. ${escapeHTML(product.price)}
+            </div>
+
+            <div class="product-stock">
+              Stock: ${escapeHTML(product.stock)}
+            </div>
+
+            <p style="color:#888;font-size:13px;">
+              ${escapeHTML(product.description || "")}
+            </p>
+
+            <div class="actions">
+
+              <button
+                class="edit-btn"
+                data-action="edit"
+                data-id="${escapeHTML(product.id)}"
+              >
+                EDIT
+              </button>
+
+              <button
+                class="delete-btn"
+                data-action="delete"
+                data-id="${escapeHTML(product.id)}"
+              >
+                DELETE
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+      `;
+
+    }).join("");
+
+
+  productsBox
+    .querySelectorAll("button")
+    .forEach(button=>{
+
+      button.addEventListener(
+        "click",
+        function(){
+
+          const id =
+            this.dataset.id;
+
+          const product =
+            data.find(
+              item=>item.id===id
+            );
+
+          if(!product){
+            return;
+          }
+
+
+          if(
+            this.dataset.action==="edit"
+          ){
+
+            startEdit(product);
+
+          }else{
+
+            deleteProduct(product);
+
+          }
+
+        }
+      );
+
+    });
+
+}
+
+
+/* ================================
+   EDIT PRODUCT
+================================ */
+
+function startEdit(product){
+
+  editingProduct =
+    product;
+
+
+  formTitle.textContent =
+    "Edit Product";
+
+
+  productName.value =
+    product.name || "";
+
+
+  productPrice.value =
+    product.price ?? "";
+
+
+  productStock.value =
+    product.stock ?? "";
+
+
+  productDescription.value =
+    product.description || "";
+
+
+  productImage.value="";
+
+
+  if(product.image_url){
+
+    imagePreview.src =
+      product.image_url;
+
+    imagePreview.style.display =
+      "block";
+
+  }else{
+
+    imagePreview.style.display =
+      "none";
+
+  }
+
+
+  saveBtn.textContent =
+    "UPDATE PRODUCT";
+
+
+  cancelBtn.classList.remove(
+    "hidden"
+  );
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* ================================
+   CANCEL EDIT
+================================ */
+
+cancelBtn.addEventListener(
+"click",
+function(){
+
+  resetForm();
+
+});
+
+
+function resetForm(){
+
+  editingProduct=null;
+
+  productForm.reset();
+
+  formTitle.textContent =
+    "Add New Product";
+
+  saveBtn.textContent =
+    "ADD PRODUCT";
+
+  cancelBtn.classList.add(
+    "hidden"
+  );
+
+  imagePreview.style.display =
+    "none";
+
+  imagePreview.removeAttribute(
+    "src"
+  );
+
+}
+
+
+/* ================================
+   DELETE PRODUCT
+================================ */
+
+async function deleteProduct(product){
+
+  const confirmed =
+    confirm(
+      "Delete '" +
+      product.name +
+      "' permanently?"
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  const {
+    error
+  } =
+  await supabaseClient
+    .from("products")
+    .delete()
+    .eq("id",product.id);
+
+
+  if(error){
+
+    alert(
+      "Delete failed: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  loadProducts();
+
+}
+
+
+/* ================================
+   HTML SECURITY
+================================ */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* ================================
+   START
+================================ */
+
+supabaseClient.auth.onAuthStateChange(
+  function(event,session){
+
+    if(session){
+
+      showAdmin();
+
+    }else{
+
+      showLogin();
+
+    }
+
+  }
+);
+
+
+checkSession();
+
+</script>
+
+</body>
+</html>
