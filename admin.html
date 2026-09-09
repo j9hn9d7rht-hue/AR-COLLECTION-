@@ -1,472 +1,559 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Collection - Admin Panel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AR Collection - Admin Panel</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      background: #050505;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
+body{
+  margin:0;
+  background:#050505;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
 
-    .container {
-      width: 92%;
-      max-width: 1100px;
-      margin: 30px auto;
-    }
+.container{
+  width:92%;
+  max-width:1100px;
+  margin:30px auto;
+}
 
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+.logo{
+  text-align:center;
+  margin-bottom:30px;
+}
 
-    .logo h1 {
-      margin: 0;
-      font-size: 34px;
-      letter-spacing: 4px;
-      color: #d4af37;
-    }
+.logo h1{
+  margin:0;
+  font-size:34px;
+  letter-spacing:4px;
+  color:#d4af37;
+}
 
-    .logo p {
-      margin-top: 10px;
-      font-size: 18px;
-      letter-spacing: 2px;
-      color: #aaa;
-    }
+.logo p{
+  margin-top:10px;
+  font-size:18px;
+  letter-spacing:2px;
+  color:#aaa;
+}
 
-    .card {
-      background: #111;
-      border: 1px solid #333;
-      border-radius: 15px;
-      padding: 25px;
-      margin-bottom: 20px;
-    }
+.card{
+  background:#111;
+  border:1px solid #333;
+  border-radius:15px;
+  padding:25px;
+  margin-bottom:20px;
+}
 
-    h2 {
-      color: #d4af37;
-      margin-top: 0;
-    }
+h2{
+  color:#d4af37;
+  margin-top:0;
+}
 
-    label {
-      display: block;
-      margin-top: 12px;
-      margin-bottom: 6px;
-      color: #ddd;
-    }
+label{
+  display:block;
+  margin-top:12px;
+  margin-bottom:6px;
+  color:#ddd;
+}
 
-    input,
-    textarea {
-      width: 100%;
-      padding: 14px;
-      border-radius: 9px;
-      border: 1px solid #444;
-      background: #080808;
-      color: white;
-      font-size: 16px;
-      outline: none;
-    }
+input,textarea{
+  width:100%;
+  padding:14px;
+  border-radius:9px;
+  border:1px solid #444;
+  background:#080808;
+  color:white;
+  font-size:16px;
+  outline:none;
+}
 
-    input:focus,
-    textarea:focus {
-      border-color: #d4af37;
-    }
+input:focus,textarea:focus{
+  border-color:#d4af37;
+}
 
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
+textarea{
+  min-height:110px;
+  resize:vertical;
+}
 
-    button {
-      padding: 13px 20px;
-      border-radius: 9px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 15px;
-      margin-top: 10px;
-      margin-right: 6px;
-    }
+button{
+  padding:13px 20px;
+  border-radius:9px;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:15px;
+  margin-top:10px;
+  margin-right:6px;
+}
 
-    .gold {
-      background: #d4af37;
-      color: #000;
-    }
+.gold{
+  background:#d4af37;
+  color:#000;
+}
 
-    .dark {
-      background: #222;
-      color: #fff;
-      border: 1px solid #444;
-    }
+.dark{
+  background:#222;
+  color:#fff;
+  border:1px solid #444;
+}
 
-    .danger {
-      background: #b91c1c;
-      color: white;
-    }
+.danger{
+  background:#b91c1c;
+  color:white;
+}
 
-    .hidden {
-      display: none !important;
-    }
+.hidden{
+  display:none!important;
+}
 
-    .message {
-      padding: 13px;
-      border-radius: 9px;
-      margin-top: 15px;
-      background: #191919;
-      border: 1px solid #333;
-      color: #fff;
-    }
+.message{
+  padding:13px;
+  border-radius:9px;
+  margin-top:15px;
+  background:#191919;
+  border:1px solid #333;
+}
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+}
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 18px;
-    }
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:18px;
+}
 
-    .product {
-      background: #080808;
-      border: 1px solid #333;
-      border-radius: 12px;
-      overflow: hidden;
-    }
+.product{
+  background:#080808;
+  border:1px solid #333;
+  border-radius:12px;
+  overflow:hidden;
+}
 
-    .product img {
-      width: 100%;
-      height: 230px;
-      object-fit: cover;
-      display: block;
-    }
+.product img{
+  width:100%;
+  height:230px;
+  object-fit:cover;
+  display:block;
+}
 
-    .no-image {
-      height: 230px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #777;
-      background: #151515;
-    }
+.no-image{
+  height:230px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  background:#151515;
+}
 
-    .product-content {
-      padding: 16px;
-    }
+.product-content{
+  padding:16px;
+}
 
-    .product h3 {
-      margin: 0 0 8px;
-      color: #d4af37;
-      font-size: 20px;
-    }
+.product h3{
+  margin:0 0 8px;
+  color:#d4af37;
+  font-size:20px;
+}
 
-    .product-description {
-      color: #bbb;
-      line-height: 1.5;
-    }
+.product-description{
+  color:#bbb;
+  line-height:1.5;
+}
 
-    .price {
-      margin-top: 10px;
-      font-size: 18px;
-      font-weight: bold;
-    }
+.price{
+  margin-top:10px;
+  font-size:18px;
+  font-weight:bold;
+}
 
-    .stock {
-      margin-top: 7px;
-      color: #999;
-    }
+.stock{
+  margin-top:7px;
+  color:#999;
+}
 
-    .preview {
-      width: 180px;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-top: 12px;
-      display: none;
-    }
+.product-sizes{
+  margin-top:10px;
+  color:#d4af37;
+  font-size:13px;
+  line-height:1.6;
+}
 
-    @media (max-width: 600px) {
-      .container {
-        width: 94%;
-      }
+.preview{
+  width:180px;
+  height:180px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-top:12px;
+  display:none;
+}
 
-      .logo h1 {
-        font-size: 27px;
-      }
+.size-options{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
 
-      .card {
-        padding: 20px;
-      }
+.size-option{
+  position:relative;
+}
 
-      .product img,
-      .no-image {
-        height: 210px;
-      }
-    }
-  </style>
+.size-option input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.size-option label{
+  display:block;
+  margin:0;
+  padding:10px 15px;
+  border:1px solid #555;
+  border-radius:8px;
+  color:#ddd;
+  background:#080808;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:13px;
+}
+
+.size-option input:checked + label{
+  background:#d4af37;
+  color:#000;
+  border-color:#d4af37;
+}
+
+@media(max-width:600px){
+  .container{width:94%}
+  .logo h1{font-size:27px}
+  .card{padding:20px}
+  .product img,.no-image{height:210px}
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <!-- HEADER -->
-  <div class="logo">
-    <h1>AR COLLECTION</h1>
-    <p>ADMIN PANEL</p>
+<div class="logo">
+  <h1>AR COLLECTION</h1>
+  <p>ADMIN PANEL</p>
+</div>
+
+<div id="loginBox" class="card">
+
+  <h2>ADMIN LOGIN</h2>
+
+  <label>Admin Email</label>
+  <input
+    id="email"
+    type="email"
+    placeholder="Enter admin email"
+    autocomplete="email"
+  >
+
+  <label>Password</label>
+  <input
+    id="password"
+    type="password"
+    placeholder="Enter password"
+    autocomplete="current-password"
+  >
+
+  <button class="gold" onclick="login()">LOGIN</button>
+
+  <div id="loginMessage" class="message hidden"></div>
+
+</div>
+
+<div id="adminPanel" class="hidden">
+
+  <div class="card">
+
+    <div class="topbar">
+
+      <div>
+        <h2>AR Collection Admin</h2>
+        <p style="color:#999;">
+          Manage your products here.
+        </p>
+      </div>
+
+      <button class="danger" onclick="logout()">
+        LOGOUT
+      </button>
+
+    </div>
+
   </div>
 
+  <div class="card">
 
-  <!-- LOGIN -->
-  <div id="loginBox" class="card">
+    <h2 id="formTitle">Add Product</h2>
 
-    <h2>ADMIN LOGIN</h2>
-
-    <label>Admin Email</label>
+    <label>Product Name</label>
 
     <input
-      id="email"
-      type="email"
-      placeholder="Enter admin email"
-      autocomplete="email"
+      id="productName"
+      type="text"
+      placeholder="Example: Premium Black Shirt"
     >
 
-    <label>Password</label>
+    <label>Description</label>
+
+    <textarea
+      id="productDescription"
+      placeholder="Product description"
+    ></textarea>
+
+    <label>Price</label>
 
     <input
-      id="password"
-      type="password"
-      placeholder="Enter password"
-      autocomplete="current-password"
+      id="productPrice"
+      type="number"
+      min="0"
+      step="0.01"
+      placeholder="Example: 2999"
     >
 
-    <button class="gold" onclick="login()">
-      LOGIN
+    <label>Stock</label>
+
+    <input
+      id="productStock"
+      type="number"
+      min="0"
+      step="1"
+      placeholder="Example: 20"
+    >
+
+    <label>Available Sizes</label>
+
+    <div class="size-options">
+
+      <div class="size-option">
+        <input type="checkbox" id="sizeS" value="S">
+        <label for="sizeS">S</label>
+      </div>
+
+      <div class="size-option">
+        <input type="checkbox" id="sizeM" value="M">
+        <label for="sizeM">M</label>
+      </div>
+
+      <div class="size-option">
+        <input type="checkbox" id="sizeL" value="L">
+        <label for="sizeL">L</label>
+      </div>
+
+      <div class="size-option">
+        <input type="checkbox" id="sizeXL" value="XL">
+        <label for="sizeXL">XL</label>
+      </div>
+
+      <div class="size-option">
+        <input type="checkbox" id="sizeXXL" value="XXL">
+        <label for="sizeXXL">XXL</label>
+      </div>
+
+      <div class="size-option">
+        <input type="checkbox" id="size3XL" value="3XL">
+        <label for="size3XL">3XL</label>
+      </div>
+
+    </div>
+
+    <label>Product Image</label>
+
+    <input
+      id="productImage"
+      type="file"
+      accept="image/*"
+      onchange="previewImage(event)"
+    >
+
+    <img
+      id="imagePreview"
+      class="preview"
+      alt="Image Preview"
+    >
+
+    <br>
+
+    <button class="gold" onclick="saveProduct()">
+      SAVE PRODUCT
     </button>
 
-    <div id="loginMessage" class="message hidden"></div>
+    <button
+      id="cancelButton"
+      class="dark hidden"
+      onclick="cancelEdit()"
+    >
+      CANCEL
+    </button>
+
+    <div id="productMessage" class="message hidden"></div>
 
   </div>
 
+  <div class="card">
 
-  <!-- ADMIN PANEL -->
-  <div id="adminPanel" class="hidden">
+    <div class="topbar">
 
-    <!-- TOP -->
-    <div class="card">
+      <h2>All Products</h2>
 
-      <div class="topbar">
-
-        <div>
-          <h2>AR Collection Admin</h2>
-          <p style="color:#999;">
-            Manage your products here.
-          </p>
-        </div>
-
-        <button class="danger" onclick="logout()">
-          LOGOUT
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- PRODUCT FORM -->
-    <div class="card">
-
-      <h2 id="formTitle">
-        Add Product
-      </h2>
-
-      <label>Product Name</label>
-
-      <input
-        id="productName"
-        type="text"
-        placeholder="Example: Premium Black Shirt"
-      >
-
-      <label>Description</label>
-
-      <textarea
-        id="productDescription"
-        placeholder="Product description"
-      ></textarea>
-
-      <label>Price</label>
-
-      <input
-        id="productPrice"
-        type="number"
-        min="0"
-        step="0.01"
-        placeholder="Example: 2999"
-      >
-
-      <label>Stock</label>
-
-      <input
-        id="productStock"
-        type="number"
-        min="0"
-        step="1"
-        placeholder="Example: 20"
-      >
-
-      <label>Product Image</label>
-
-      <input
-        id="productImage"
-        type="file"
-        accept="image/*"
-        onchange="previewImage(event)"
-      >
-
-      <img
-        id="imagePreview"
-        class="preview"
-        alt="Image Preview"
-      >
-
-      <br>
-
-      <button
-        class="gold"
-        onclick="saveProduct()"
-      >
-        SAVE PRODUCT
+      <button class="dark" onclick="loadProducts()">
+        REFRESH
       </button>
 
-      <button
-        id="cancelButton"
-        class="dark hidden"
-        onclick="cancelEdit()"
-      >
-        CANCEL
-      </button>
-
-      <div
-        id="productMessage"
-        class="message hidden"
-      ></div>
-
     </div>
 
-
-    <!-- PRODUCTS -->
-    <div class="card">
-
-      <div class="topbar">
-
-        <h2>
-          All Products
-        </h2>
-
-        <button
-          class="dark"
-          onclick="loadProducts()"
-        >
-          REFRESH
-        </button>
-
-      </div>
-
-      <div
-        id="products"
-        class="products"
-      ></div>
-
-    </div>
+    <div id="products" class="products"></div>
 
   </div>
 
 </div>
 
+</div>
 
 <script>
 
-/* =====================================================
-   SUPABASE
-===================================================== */
+const SUPABASE_URL=
+"https://zlbezexsphxoqaldmbyg.supabase.co";
 
-const SUPABASE_URL =
-  "https://zlbezexsphxoqaldmbyg.supabase.co";
+const SUPABASE_ANON_KEY=
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6InpsYmV6ZXNwaHhvcWFsZG1ieWciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODg1NjA2NiwiZXhwIjoyMTA0NDMyMDY2fQ.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
 
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmV6ZXhzcGh4b3FhbGRtYnlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTYwNjYsImV4cCI6MjEwNDQzMjA2Nn0.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
+const db=window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
-const db =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
+let editingProductId=null;
+let editingImageUrl=null;
 
-
-/* =====================================================
-   VARIABLES
-===================================================== */
-
-let editingProductId = null;
-
-
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-function showMessage(
-  elementId,
-  text,
-  error = false
-) {
-
-  const box =
-    document.getElementById(elementId);
-
-  box.textContent = text;
-
-  box.classList.remove("hidden");
-
-  if (error) {
-    box.style.color = "#ff8b8b";
-  } else {
-    box.style.color = "#8ee28e";
-  }
+function escapeHtml(value){
+  return String(value??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
+function showMessage(elementId,text,error=false){
 
-/* =====================================================
-   LOGIN
-===================================================== */
+  const box=document.getElementById(elementId);
 
-async function login() {
+  box.textContent=text;
+  box.classList.remove("hidden");
 
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
+  box.style.color=error
+    ? "#ff8b8b"
+    : "#8ee28e";
+}
 
-  const password =
-    document
-      .getElementById("password")
-      .value;
+function getSelectedSizes(){
 
-  if (!email || !password) {
+  const ids=[
+    "sizeS",
+    "sizeM",
+    "sizeL",
+    "sizeXL",
+    "sizeXXL",
+    "size3XL"
+  ];
+
+  return ids
+    .map(id=>document.getElementById(id))
+    .filter(input=>input.checked)
+    .map(input=>input.value);
+}
+
+function setSelectedSizes(sizes){
+
+  const available=[
+    "S","M","L","XL","XXL","3XL"
+  ];
+
+  available.forEach(size=>{
+
+    const id=
+      size==="S" ? "sizeS" :
+      size==="M" ? "sizeM" :
+      size==="L" ? "sizeL" :
+      size==="XL" ? "sizeXL" :
+      size==="XXL" ? "sizeXXL" :
+      "size3XL";
+
+    document.getElementById(id).checked=
+      Array.isArray(sizes) &&
+      sizes.includes(size);
+  });
+}
+
+function clearForm(){
+
+  document.getElementById("productName").value="";
+  document.getElementById("productDescription").value="";
+  document.getElementById("productPrice").value="";
+  document.getElementById("productStock").value="";
+  document.getElementById("productImage").value="";
+
+  setSelectedSizes([]);
+
+  const preview=document.getElementById("imagePreview");
+
+  preview.src="";
+  preview.style.display="none";
+
+  editingProductId=null;
+  editingImageUrl=null;
+
+  document.getElementById("formTitle").textContent=
+    "Add Product";
+
+  document.getElementById("cancelButton")
+    .classList.add("hidden");
+}
+
+function previewImage(event){
+
+  const file=event.target.files[0];
+
+  if(!file) return;
+
+  const preview=document.getElementById("imagePreview");
+
+  preview.src=URL.createObjectURL(file);
+  preview.style.display="block";
+}
+
+async function login(){
+
+  const email=document
+    .getElementById("email")
+    .value
+    .trim();
+
+  const password=document
+    .getElementById("password")
+    .value;
+
+  if(!email || !password){
 
     showMessage(
       "loginMessage",
@@ -482,43 +569,29 @@ async function login() {
     "Login ho raha hai..."
   );
 
+  try{
 
-  try {
+    const response=await fetch(
+      SUPABASE_URL+
+      "/auth/v1/token?grant_type=password",
+      {
+        method:"POST",
 
-    /*
-      Direct Supabase Auth request.
-      Is se API key clearly request header
-      mein send hoti hai.
-    */
+        headers:{
+          "Content-Type":"application/json",
+          "apikey":SUPABASE_ANON_KEY
+        },
 
-    const response =
-      await fetch(
-        SUPABASE_URL +
-        "/auth/v1/token?grant_type=password",
-        {
-          method: "POST",
+        body:JSON.stringify({
+          email:email,
+          password:password
+        })
+      }
+    );
 
-          headers: {
-            "Content-Type":
-              "application/json",
+    const result=await response.json();
 
-            "apikey":
-              SUPABASE_ANON_KEY
-          },
-
-          body: JSON.stringify({
-            email: email,
-            password: password
-          })
-        }
-      );
-
-
-    const result =
-      await response.json();
-
-
-    if (!response.ok) {
+    if(!response.ok){
 
       throw new Error(
         result.msg ||
@@ -528,51 +601,34 @@ async function login() {
       );
     }
 
-
-    if (
+    if(
       !result.access_token ||
       !result.refresh_token
-    ) {
+    ){
 
       throw new Error(
         "Supabase session nahi mili."
       );
     }
 
-
-    /*
-      Login session save
-    */
-
-    const sessionResult =
+    const sessionResult=
       await db.auth.setSession({
-        access_token:
-          result.access_token,
-
-        refresh_token:
-          result.refresh_token
+        access_token:result.access_token,
+        refresh_token:result.refresh_token
       });
 
-
-    if (sessionResult.error) {
+    if(sessionResult.error){
       throw sessionResult.error;
     }
 
-
-    /*
-      Check admin
-    */
-
-    const adminCheck =
+    const adminCheck=
       await db.rpc("is_admin");
 
-
-    if (adminCheck.error) {
+    if(adminCheck.error){
       throw adminCheck.error;
     }
 
-
-    if (adminCheck.data !== true) {
+    if(adminCheck.data!==true){
 
       await db.auth.signOut();
 
@@ -580,11 +636,6 @@ async function login() {
         "Ye account admin nahi hai."
       );
     }
-
-
-    /*
-      Show admin panel
-    */
 
     document
       .getElementById("loginBox")
@@ -594,34 +645,21 @@ async function login() {
       .getElementById("adminPanel")
       .classList.remove("hidden");
 
-
     await loadProducts();
 
-  }
+  }catch(error){
 
-  catch (error) {
-
-    console.error(
-      "LOGIN ERROR:",
-      error
-    );
+    console.error("LOGIN ERROR:",error);
 
     showMessage(
       "loginMessage",
-      error.message ||
-      "Login failed.",
+      error.message || "Login failed.",
       true
     );
   }
-
 }
 
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-async function logout() {
+async function logout(){
 
   await db.auth.signOut();
 
@@ -633,50 +671,38 @@ async function logout() {
     .getElementById("loginBox")
     .classList.remove("hidden");
 
-  document
-    .getElementById("password")
-    .value = "";
+  document.getElementById("password").value="";
 
+  clearForm();
 }
 
+async function checkSession(){
 
-/* =====================================================
-   CHECK SESSION
-===================================================== */
+  try{
 
-async function checkSession() {
-
-  try {
-
-    const session =
+    const session=
       await db.auth.getSession();
 
-
-    if (session.error) {
+    if(session.error){
       console.error(session.error);
       return;
     }
 
-
-    if (!session.data.session) {
+    if(!session.data.session){
       return;
     }
 
-
-    const adminCheck =
+    const adminCheck=
       await db.rpc("is_admin");
 
-
-    if (
+    if(
       adminCheck.error ||
-      adminCheck.data !== true
-    ) {
+      adminCheck.data!==true
+    ){
 
       await db.auth.signOut();
-
       return;
     }
-
 
     document
       .getElementById("loginBox")
@@ -686,224 +712,88 @@ async function checkSession() {
       .getElementById("adminPanel")
       .classList.remove("hidden");
 
-
     await loadProducts();
 
-  }
-
-  catch (error) {
+  }catch(error){
 
     console.error(
       "SESSION ERROR:",
       error
     );
-
   }
-
 }
 
+async function uploadImage(file){
 
-/* =====================================================
-   LOAD PRODUCTS
-===================================================== */
+  const extension=
+    file.name.split(".").pop().toLowerCase();
 
-async function loadProducts() {
+  const fileName=
+    Date.now()+
+    "-" +
+    Math.random()
+      .toString(36)
+      .substring(2)+
+    "."+
+    extension;
 
-  const productsBox =
-    document.getElementById("products");
+  const filePath=
+    "products/"+fileName;
 
-
-  productsBox.innerHTML =
-    "<p style='color:#aaa;'>Loading products...</p>";
-
-
-  const result =
-    await db
+  const uploadResult=
+    await db.storage
       .from("products")
-      .select("*")
-      .order(
-        "created_at",
+      .upload(
+        filePath,
+        file,
         {
-          ascending: false
+          cacheControl:"3600",
+          upsert:false
         }
       );
 
-
-  if (result.error) {
-
-    console.error(
-      result.error
-    );
-
-    productsBox.innerHTML =
-      "<p style='color:#ff7777;'>" +
-      "Products load nahi ho rahe: " +
-      escapeHtml(
-        result.error.message
-      ) +
-      "</p>";
-
-    return;
+  if(uploadResult.error){
+    throw uploadResult.error;
   }
 
+  const publicResult=
+    db.storage
+      .from("products")
+      .getPublicUrl(filePath);
 
-  const products =
-    result.data || [];
-
-
-  if (products.length === 0) {
-
-    productsBox.innerHTML =
-      "<p style='color:#aaa;'>" +
-      "Abhi koi product nahi hai." +
-      "</p>";
-
-    return;
-  }
-
-
-  productsBox.innerHTML = "";
-
-
-  products.forEach(
-    function(product) {
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "product";
-
-
-      let imageHTML =
-        '<div class="no-image">No Image</div>';
-
-
-      if (product.image_url) {
-
-        imageHTML =
-          '<img src="' +
-          escapeHtml(
-            product.image_url
-          ) +
-          '" alt="Product">';
-      }
-
-
-      card.innerHTML =
-
-        imageHTML +
-
-        '<div class="product-content">' +
-
-        '<h3>' +
-        escapeHtml(
-          product.name
-        ) +
-        '</h3>' +
-
-        '<div class="product-description">' +
-        escapeHtml(
-          product.description || ""
-        ) +
-        '</div>' +
-
-        '<div class="price">' +
-        'Rs. ' +
-        Number(
-          product.price || 0
-        ).toLocaleString() +
-        '</div>' +
-
-        '<div class="stock">' +
-        'Stock: ' +
-        Number(
-          product.stock || 0
-        ) +
-        '</div>' +
-
-        '<button class="gold">' +
-        'Edit' +
-        '</button>' +
-
-        '<button class="danger">' +
-        'Delete' +
-        '</button>' +
-
-        '</div>';
-
-
-      const buttons =
-        card.querySelectorAll(
-          "button"
-        );
-
-
-      buttons[0].onclick =
-        function() {
-          editProduct(product);
-        };
-
-
-      buttons[1].onclick =
-        function() {
-          deleteProduct(
-            product.id
-          );
-        };
-
-
-      productsBox.appendChild(card);
-
-    }
-  );
-
+  return publicResult.data.publicUrl;
 }
 
+async function saveProduct(){
 
-/* =====================================================
-   SAVE PRODUCT
-===================================================== */
-
-async function saveProduct() {
-
-  const name =
+  const name=
     document
       .getElementById("productName")
       .value
       .trim();
 
-
-  const description =
+  const description=
     document
       .getElementById("productDescription")
       .value
       .trim();
 
-
-  const price =
-    Number(
-      document
-        .getElementById("productPrice")
-        .value
-    );
-
-
-  const stock =
-    Number(
-      document
-        .getElementById("productStock")
-        .value
-    );
-
-
-  const imageFile =
+  const price=
     document
-      .getElementById("productImage")
-      .files[0];
+      .getElementById("productPrice")
+      .value;
 
+  const stock=
+    document
+      .getElementById("productStock")
+      .value;
 
-  if (!name) {
+  const imageInput=
+    document.getElementById("productImage");
+
+  const sizes=getSelectedSizes();
+
+  if(!name){
 
     showMessage(
       "productMessage",
@@ -914,205 +804,103 @@ async function saveProduct() {
     return;
   }
 
-
-  if (
-    Number.isNaN(price) ||
-    price < 0
-  ) {
+  if(price===""){
 
     showMessage(
       "productMessage",
-      "Valid price enter karo.",
+      "Price enter karo.",
       true
     );
 
     return;
   }
 
-
-  if (
-    Number.isNaN(stock) ||
-    stock < 0
-  ) {
+  if(stock===""){
 
     showMessage(
       "productMessage",
-      "Valid stock enter karo.",
+      "Stock enter karo.",
       true
     );
 
     return;
   }
 
+  if(sizes.length===0){
 
-  showMessage(
-    "productMessage",
-    "Product save ho raha hai..."
-  );
+    showMessage(
+      "productMessage",
+      "Kam az kam 1 size select karo.",
+      true
+    );
 
+    return;
+  }
 
-  try {
+  try{
 
-    let imageUrl = "";
+    showMessage(
+      "productMessage",
+      "Product save ho raha hai..."
+    );
 
+    let imageUrl=editingImageUrl;
 
-    /*
-      Upload image if selected
-    */
+    if(imageInput.files.length>0){
 
-    if (imageFile) {
-
-      const extension =
-        imageFile.name
-          .split(".")
-          .pop()
-          .toLowerCase();
-
-
-      const fileName =
-        Date.now() +
-        "-" +
-        Math.random()
-          .toString(36)
-          .substring(2) +
-        "." +
-        extension;
-
-
-      const upload =
-        await db.storage
-          .from("products")
-          .upload(
-            fileName,
-            imageFile,
-            {
-              cacheControl: "3600",
-              upsert: false,
-              contentType:
-                imageFile.type
-            }
-          );
-
-
-      if (upload.error) {
-        throw upload.error;
-      }
-
-
-      const publicUrl =
-        db.storage
-          .from("products")
-          .getPublicUrl(
-            fileName
-          );
-
-
-      imageUrl =
-        publicUrl.data.publicUrl;
-
+      imageUrl=
+        await uploadImage(
+          imageInput.files[0]
+        );
     }
 
+    const productData={
+      name:name,
+      description:description,
+      price:Number(price),
+      stock:Number(stock),
+      sizes:sizes
+    };
 
-    /*
-      EDIT
-    */
-
-    if (editingProductId) {
-
-      const updateData = {
-
-        name: name,
-
-        description:
-          description,
-
-        price: price,
-
-        stock: stock
-
-      };
-
-
-      if (imageUrl) {
-
-        updateData.image_url =
-          imageUrl;
-
-      }
-
-
-      const update =
-        await db
-          .from("products")
-          .update(updateData)
-          .eq(
-            "id",
-            editingProductId
-          );
-
-
-      if (update.error) {
-        throw update.error;
-      }
-
-
-      showMessage(
-        "productMessage",
-        "Product successfully update ho gaya."
-      );
-
+    if(imageUrl){
+      productData.image_url=imageUrl;
     }
 
+    let result;
 
-    /*
-      ADD
-    */
+    if(editingProductId){
 
-    else {
+      result=await db
+        .from("products")
+        .update(productData)
+        .eq("id",editingProductId);
 
-      const insert =
-        await db
-          .from("products")
-          .insert({
+    }else{
 
-            name: name,
-
-            description:
-              description,
-
-            price: price,
-
-            stock: stock,
-
-            image_url:
-              imageUrl
-
-          });
-
-
-      if (insert.error) {
-        throw insert.error;
-      }
-
-
-      showMessage(
-        "productMessage",
-        "Product successfully add ho gaya."
-      );
-
+      result=await db
+        .from("products")
+        .insert(productData);
     }
 
+    if(result.error){
+      throw result.error;
+    }
+
+    showMessage(
+      "productMessage",
+      editingProductId
+        ? "Product successfully updated."
+        : "Product successfully saved."
+    );
 
     clearForm();
 
     await loadProducts();
 
-  }
-
-  catch (error) {
+  }catch(error){
 
     console.error(
-      "PRODUCT ERROR:",
+      "SAVE ERROR:",
       error
     );
 
@@ -1122,281 +910,251 @@ async function saveProduct() {
       "Product save nahi hua.",
       true
     );
-
   }
-
 }
 
+async function loadProducts(){
 
-/* =====================================================
-   EDIT PRODUCT
-===================================================== */
+  const productsBox=
+    document.getElementById("products");
 
-function editProduct(product) {
+  productsBox.innerHTML=
+    "<p style='color:#aaa;'>Loading products...</p>";
 
-  editingProductId =
-    product.id;
+  const result=
+    await db
+      .from("products")
+      .select("*")
+      .order(
+        "created_at",
+        {ascending:false}
+      );
 
+  if(result.error){
 
-  document
-    .getElementById("formTitle")
-    .textContent =
-    "Edit Product";
+    console.error(result.error);
 
+    productsBox.innerHTML=
+      "<p style='color:#ff7777;'>"+
+      "Products load nahi ho rahe: "+
+      escapeHtml(result.error.message)+
+      "</p>";
 
-  document
-    .getElementById("productName")
-    .value =
-    product.name || "";
-
-
-  document
-    .getElementById("productDescription")
-    .value =
-    product.description || "";
-
-
-  document
-    .getElementById("productPrice")
-    .value =
-    product.price || 0;
-
-
-  document
-    .getElementById("productStock")
-    .value =
-    product.stock || 0;
-
-
-  document
-    .getElementById("cancelButton")
-    .classList.remove(
-      "hidden"
-    );
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-}
-
-
-/* =====================================================
-   CANCEL EDIT
-===================================================== */
-
-function cancelEdit() {
-
-  clearForm();
-
-}
-
-
-/* =====================================================
-   CLEAR FORM
-===================================================== */
-
-function clearForm() {
-
-  editingProductId = null;
-
-
-  document
-    .getElementById("formTitle")
-    .textContent =
-    "Add Product";
-
-
-  document
-    .getElementById("productName")
-    .value = "";
-
-
-  document
-    .getElementById("productDescription")
-    .value = "";
-
-
-  document
-    .getElementById("productPrice")
-    .value = "";
-
-
-  document
-    .getElementById("productStock")
-    .value = "";
-
-
-  document
-    .getElementById("productImage")
-    .value = "";
-
-
-  const preview =
-    document.getElementById(
-      "imagePreview"
-    );
-
-
-  preview.src = "";
-
-  preview.style.display =
-    "none";
-
-
-  document
-    .getElementById("cancelButton")
-    .classList.add(
-      "hidden"
-    );
-
-}
-
-
-/* =====================================================
-   DELETE PRODUCT
-===================================================== */
-
-async function deleteProduct(id) {
-
-  const confirmDelete =
-    confirm(
-      "Kya aap ye product delete karna chahte hain?"
-    );
-
-
-  if (!confirmDelete) {
     return;
   }
 
+  const products=result.data||[];
 
-  try {
+  if(products.length===0){
 
-    const result =
+    productsBox.innerHTML=
+      "<p style='color:#aaa;'>"+
+      "Abhi koi product nahi hai."+
+      "</p>";
+
+    return;
+  }
+
+  productsBox.innerHTML="";
+
+  products.forEach(product=>{
+
+    const sizes=
+      Array.isArray(product.sizes)
+      ? product.sizes
+      : [];
+
+    const image=
+      product.image_url
+      ? escapeHtml(product.image_url)
+      :"";
+
+    const card=
+      document.createElement("div");
+
+    card.className="product";
+
+    card.innerHTML=`
+
+      ${
+        image
+        ? `<img src="${image}" alt="${escapeHtml(product.name)}">`
+        : `<div class="no-image">AR COLLECTION</div>`
+      }
+
+      <div class="product-content">
+
+        <h3>
+          ${escapeHtml(product.name)}
+        </h3>
+
+        <div class="product-description">
+          ${escapeHtml(product.description||"")}
+        </div>
+
+        <div class="price">
+          Rs. ${escapeHtml(product.price)}
+        </div>
+
+        <div class="stock">
+          Stock: ${escapeHtml(product.stock)}
+        </div>
+
+        <div class="product-sizes">
+          Sizes:
+          ${
+            sizes.length
+            ? sizes.map(escapeHtml).join(", ")
+            : "None"
+          }
+        </div>
+
+        <button
+          class="gold"
+          onclick="editProduct('${product.id}')">
+          EDIT
+        </button>
+
+        <button
+          class="danger"
+          onclick="deleteProduct('${product.id}')">
+          DELETE
+        </button>
+
+      </div>
+    `;
+
+    productsBox.appendChild(card);
+  });
+}
+
+async function editProduct(id){
+
+  try{
+
+    const result=
       await db
         .from("products")
-        .delete()
-        .eq(
-          "id",
-          id
-        );
+        .select("*")
+        .eq("id",id)
+        .single();
 
-
-    if (result.error) {
+    if(result.error){
       throw result.error;
     }
 
+    const product=result.data;
 
-    showMessage(
-      "productMessage",
-      "Product delete ho gaya."
-    );
+    editingProductId=product.id;
+    editingImageUrl=product.image_url||null;
 
+    document
+      .getElementById("productName")
+      .value=product.name||"";
 
-    await loadProducts();
+    document
+      .getElementById("productDescription")
+      .value=product.description||"";
 
-  }
+    document
+      .getElementById("productPrice")
+      .value=product.price??"";
 
-  catch (error) {
+    document
+      .getElementById("productStock")
+      .value=product.stock??"";
+
+    setSelectedSizes(product.sizes||[]);
+
+    document
+      .getElementById("formTitle")
+      .textContent="Edit Product";
+
+    document
+      .getElementById("cancelButton")
+      .classList.remove("hidden");
+
+    const preview=
+      document.getElementById("imagePreview");
+
+    if(product.image_url){
+
+      preview.src=product.image_url;
+      preview.style.display="block";
+
+    }else{
+
+      preview.src="";
+      preview.style.display="none";
+    }
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  }catch(error){
 
     console.error(error);
 
     showMessage(
       "productMessage",
-      error.message ||
+      error.message||
+      "Product load nahi hua.",
+      true
+    );
+  }
+}
+
+async function deleteProduct(id){
+
+  const confirmed=
+    confirm(
+      "Kya aap is product ko delete karna chahte hain?"
+    );
+
+  if(!confirmed) return;
+
+  try{
+
+    const result=
+      await db
+        .from("products")
+        .delete()
+        .eq("id",id);
+
+    if(result.error){
+      throw result.error;
+    }
+
+    await loadProducts();
+
+    showMessage(
+      "productMessage",
+      "Product deleted successfully."
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "productMessage",
+      error.message||
       "Product delete nahi hua.",
       true
     );
-
   }
-
 }
 
+function cancelEdit(){
 
-/* =====================================================
-   IMAGE PREVIEW
-===================================================== */
+  clearForm();
 
-function previewImage(event) {
-
-  const file =
-    event.target.files[0];
-
-
-  const preview =
-    document.getElementById(
-      "imagePreview"
-    );
-
-
-  if (!file) {
-
-    preview.src = "";
-
-    preview.style.display =
-      "none";
-
-    return;
-  }
-
-
-  const reader =
-    new FileReader();
-
-
-  reader.onload =
-    function(event) {
-
-      preview.src =
-        event.target.result;
-
-      preview.style.display =
-        "block";
-
-    };
-
-
-  reader.readAsDataURL(file);
-
+  document
+    .getElementById("productMessage")
+    .classList.add("hidden");
 }
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(value) {
-
-  return String(value)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
 
 checkSession();
 
