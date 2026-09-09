@@ -1,674 +1,1245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AR COLLECTION | Admin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AR Collection | Admin Panel</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#080808;color:#fff;font-family:Arial,sans-serif}
-header{padding:18px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #292929;background:#0d0d0d}
-.logo{color:#d4af37;font-weight:900;letter-spacing:3px;font-size:20px}
-button{cursor:pointer}
-.logout{padding:10px 16px;border:1px solid #d4af37;background:none;color:#d4af37;border-radius:6px}
-main{max-width:1050px;margin:auto;padding:30px 18px 60px}
-.box{background:#111;border:1px solid #292929;border-radius:12px;padding:25px}
-.login{max-width:450px;margin:70px auto}
-h1,h2{color:#d4af37}
-label{display:block;margin:16px 0 7px}
-input,textarea{width:100%;padding:13px;background:#080808;color:#fff;border:1px solid #333;border-radius:6px;font-size:15px}
-textarea{min-height:100px;resize:vertical}
-.primary{width:100%;padding:14px;margin-top:18px;background:#d4af37;color:#000;border:0;border-radius:6px;font-weight:bold}
-.msg{margin-top:15px;padding:12px;border-radius:6px;display:none}
-.error{display:block;background:#301010;color:#ffaaaa}
-.success{display:block;background:#102817;color:#9ee8b6}
-.hidden{display:none!important}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.full{grid-column:1/-1}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:25px}
-.product{background:#090909;border:1px solid #292929;border-radius:10px;overflow:hidden}
-.product img{width:100%;height:230px;object-fit:cover}
-.info{padding:16px}
-.price{color:#f4d878;font-size:19px;font-weight:bold;margin:10px 0}
-.actions{display:flex;gap:8px;margin-top:15px}
-.edit,.delete{flex:1;padding:10px;border-radius:5px;background:none;font-weight:bold}
-.edit{border:1px solid #d4af37;color:#d4af37}
-.delete{border:1px solid #e05252;color:#ff7777}
-.cancel{width:100%;padding:12px;margin-top:10px;background:none;color:#aaa;border:1px solid #555;border-radius:6px}
-.empty{text-align:center;color:#888;padding:35px;border:1px dashed #444;border-radius:8px}
-@media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
-</style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #080808;
+      color: #f5f5f5;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+
+    h1, h2 {
+      color: #d4af37;
+      letter-spacing: 2px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .brand h1 {
+      font-size: 42px;
+      margin: 0 0 8px;
+    }
+
+    .brand p {
+      color: #aaa;
+      margin: 0;
+    }
+
+    .card {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 8px;
+      color: #ddd;
+      font-size: 16px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #444;
+      background: #080808;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #d4af37;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 20px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .gold-btn {
+      background: #d4af37;
+      color: #080808;
+      width: 100%;
+      margin-top: 22px;
+    }
+
+    .gold-btn:hover {
+      background: #f0ce55;
+    }
+
+    .logout {
+      background: #222;
+      color: white;
+      border: 1px solid #444;
+    }
+
+    .logout:hover {
+      background: #333;
+    }
+
+    .delete {
+      background: #8b2222;
+      color: white;
+    }
+
+    .delete:hover {
+      background: #b52d2d;
+    }
+
+    .edit {
+      background: #d4af37;
+      color: #080808;
+    }
+
+    .message {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .error {
+      display: block;
+      background: #351010;
+      color: #ffaaaa;
+      border: 1px solid #652222;
+    }
+
+    .success {
+      display: block;
+      background: #102d18;
+      color: #9ff0ae;
+      border: 1px solid #235c30;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .topbar h2 {
+      margin: 0;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background: #0c0c0c;
+      border: 1px solid #333;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .product img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      background: #151515;
+      display: block;
+    }
+
+    .product-info {
+      padding: 18px;
+    }
+
+    .product-info h3 {
+      margin: 0 0 8px;
+      color: #d4af37;
+    }
+
+    .product-info p {
+      color: #aaa;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .price {
+      color: white !important;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .stock {
+      color: #aaa !important;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .actions button {
+      flex: 1;
+    }
+
+    .preview {
+      margin-top: 12px;
+      max-width: 180px;
+      max-height: 180px;
+      border-radius: 10px;
+      display: none;
+      object-fit: cover;
+    }
+
+    .loading {
+      text-align: center;
+      color: #aaa;
+      padding: 30px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #888;
+      padding: 35px;
+      border: 1px dashed #444;
+      border-radius: 15px;
+    }
+
+    .login-box {
+      max-width: 550px;
+      margin: 80px auto;
+    }
+
+    .admin-panel {
+      display: none;
+    }
+
+    .admin-panel.active {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 94%;
+        padding: 25px 0;
+      }
+
+      .brand h1 {
+        font-size: 32px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .logout {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-<div class="logo">AR COLLECTION</div>
-<button id="logout" class="logout hidden">LOGOUT</button>
-</header>
+  <!-- LOGIN -->
+  <div id="loginScreen" class="container login-box">
 
-<main>
+    <div class="brand">
+      <h1>AR COLLECTION</h1>
+      <p>ADMIN PANEL</p>
+    </div>
 
-<!-- LOGIN -->
-<section id="login" class="box login">
-<h1>ADMIN LOGIN</h1>
+    <div class="card">
+      <h2>ADMIN LOGIN</h2>
 
-<label>Email</label>
-<input id="email" type="email" placeholder="Admin email">
+      <label for="email">Admin Email</label>
+      <input
+        id="email"
+        type="email"
+        autocomplete="email"
+        placeholder="Enter admin email"
+      >
 
-<label>Password</label>
-<input id="password" type="password" placeholder="Password">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Enter password"
+      >
 
-<button id="loginBtn" class="primary">LOGIN</button>
+      <button id="loginBtn" class="gold-btn">
+        LOGIN
+      </button>
 
-<div id="loginMsg" class="msg"></div>
-</section>
-
-
-<!-- ADMIN PANEL -->
-<section id="panel" class="hidden">
-
-<div class="box">
-<h1>AR COLLECTION ADMIN</h1>
-
-<form id="form">
-
-<div class="grid">
-
-<div>
-<label>Product Name</label>
-<input id="name" required placeholder="Premium Black Shirt">
-</div>
-
-<div>
-<label>Price (PKR)</label>
-<input id="price" type="number" min="0" required placeholder="2999">
-</div>
-
-<div>
-<label>Stock</label>
-<input id="stock" type="number" min="0" required placeholder="10">
-</div>
-
-<div>
-<label>Product Image</label>
-<input id="image" type="file" accept="image/*">
-</div>
-
-<div class="full">
-<label>Description</label>
-<textarea id="description" placeholder="Product details"></textarea>
-</div>
-
-</div>
-
-<button id="save" class="primary" type="submit">ADD PRODUCT</button>
-<button id="cancel" class="cancel hidden" type="button">CANCEL EDIT</button>
-
-<div id="formMsg" class="msg"></div>
-
-</form>
-</div>
+      <div id="loginMessage" class="message"></div>
+    </div>
+  </div>
 
 
-<div class="box" style="margin-top:25px">
-<h2>Your Products</h2>
-<div id="products" class="products">
-<div class="empty">Loading...</div>
-</div>
-</div>
+  <!-- ADMIN PANEL -->
+  <div id="adminPanel" class="container admin-panel">
 
-</section>
+    <div class="topbar">
+      <div>
+        <h2>AR COLLECTION</h2>
+        <p style="color:#888;margin:5px 0 0;">Online Admin Panel</p>
+      </div>
 
-</main>
+      <button id="logoutBtn" class="logout">
+        LOGOUT
+      </button>
+    </div>
+
+
+    <!-- ADD / EDIT PRODUCT -->
+    <div class="card">
+
+      <h2 id="formTitle">ADD PRODUCT</h2>
+
+      <input type="hidden" id="productId">
+
+      <label for="productName">Product Name</label>
+      <input
+        id="productName"
+        type="text"
+        placeholder="Example: Premium Black Shirt"
+      >
+
+      <label for="productDescription">Description</label>
+      <textarea
+        id="productDescription"
+        placeholder="Product description..."
+      ></textarea>
+
+      <label for="productPrice">Price (PKR)</label>
+      <input
+        id="productPrice"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="2999"
+      >
+
+      <label for="productStock">Stock</label>
+      <input
+        id="productStock"
+        type="number"
+        min="0"
+        step="1"
+        placeholder="10"
+      >
+
+      <label for="productImage">Product Image</label>
+      <input
+        id="productImage"
+        type="file"
+        accept="image/*"
+      >
+
+      <img id="imagePreview" class="preview" alt="Preview">
+
+      <button id="saveProductBtn" class="gold-btn">
+        ADD PRODUCT
+      </button>
+
+      <button
+        id="cancelEditBtn"
+        class="logout hidden"
+        style="width:100%;margin-top:10px;"
+      >
+        CANCEL EDIT
+      </button>
+
+      <div id="productMessage" class="message"></div>
+
+    </div>
+
+
+    <!-- PRODUCTS -->
+    <div class="card">
+
+      <div class="topbar">
+        <div>
+          <h2>PRODUCTS</h2>
+          <p style="color:#888;margin:5px 0 0;">
+            Manage your AR Collection products
+          </p>
+        </div>
+
+        <button id="refreshBtn" class="logout">
+          REFRESH
+        </button>
+      </div>
+
+      <div id="productsList" class="products">
+        <div class="loading">
+          Loading products...
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
 
 <script>
+  /* =========================================================
+     SUPABASE CONFIG
+     ========================================================= */
 
-/* =========================
-   SUPABASE
-========================= */
+  const SUPABASE_URL = "https://zlbezexsphxoqaldmbyg.supabase.co";
 
-const SUPABASE_URL =
-"https://zlbezexsphxoqaldmbyg.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmV4ZXNwaHhvcWFsZG1ieWciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODg1NjA2NiwiZXhwIjoyMTA0NDMyMDY2fQ.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
 
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmV6ZXhzcGh4b3FhbGRtYnlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTYwNjYsImV4cCI6MjEwNDQzMjA2Nn0.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
+  const { createClient } = supabase;
 
-const db = window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
-);
+  const db = createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
 
-/* =========================
-   ELEMENTS
-========================= */
+  /* =========================================================
+     ELEMENTS
+     ========================================================= */
 
-const login = document.getElementById("login");
-const panel = document.getElementById("panel");
-const logout = document.getElementById("logout");
+  const loginScreen = document.getElementById("loginScreen");
+  const adminPanel = document.getElementById("adminPanel");
 
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const loginBtn = document.getElementById("loginBtn");
-const loginMsg = document.getElementById("loginMsg");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
 
-const form = document.getElementById("form");
-const nameInput = document.getElementById("name");
-const priceInput = document.getElementById("price");
-const stockInput = document.getElementById("stock");
-const descriptionInput = document.getElementById("description");
-const imageInput = document.getElementById("image");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
 
-const save = document.getElementById("save");
-const cancel = document.getElementById("cancel");
-const formMsg = document.getElementById("formMsg");
-const products = document.getElementById("products");
+  const loginMessage = document.getElementById("loginMessage");
 
-let editing = null;
+  const productId = document.getElementById("productId");
+  const productName = document.getElementById("productName");
+  const productDescription =
+    document.getElementById("productDescription");
+  const productPrice = document.getElementById("productPrice");
+  const productStock = document.getElementById("productStock");
+  const productImage = document.getElementById("productImage");
 
+  const imagePreview =
+    document.getElementById("imagePreview");
 
-/* =========================
-   MESSAGE
-========================= */
+  const saveProductBtn =
+    document.getElementById("saveProductBtn");
 
-function message(el,text,type){
+  const cancelEditBtn =
+    document.getElementById("cancelEditBtn");
 
-el.textContent = text;
-el.className = "msg " + type;
+  const productMessage =
+    document.getElementById("productMessage");
 
-}
+  const productsList =
+    document.getElementById("productsList");
 
+  const refreshBtn =
+    document.getElementById("refreshBtn");
 
-/* =========================
-   LOGIN
-========================= */
+  const formTitle =
+    document.getElementById("formTitle");
 
-async function start(){
 
-const {data} = await db.auth.getSession();
+  /* =========================================================
+     MESSAGE HELPERS
+     ========================================================= */
 
-if(data.session){
+  function showMessage(element, text, type) {
+    element.textContent = text;
+    element.className = "message " + type;
+  }
 
-showPanel();
+  function clearMessage(element) {
+    element.textContent = "";
+    element.className = "message";
+  }
 
-}else{
 
-showLogin();
+  /* =========================================================
+     LOGIN
+     ========================================================= */
 
-}
+  loginBtn.addEventListener("click", login);
 
-}
+  passwordInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      login();
+    }
+  });
 
+  emailInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      login();
+    }
+  });
 
-function showLogin(){
 
-login.classList.remove("hidden");
-panel.classList.add("hidden");
-logout.classList.add("hidden");
+  async function login() {
 
-}
+    clearMessage(loginMessage);
 
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
-function showPanel(){
+    if (!email || !password) {
+      showMessage(
+        loginMessage,
+        "Please enter email and password.",
+        "error"
+      );
+      return;
+    }
 
-login.classList.add("hidden");
-panel.classList.remove("hidden");
-logout.classList.remove("hidden");
+    loginBtn.disabled = true;
+    loginBtn.textContent = "LOGGING IN...";
 
-loadProducts();
+    try {
 
-}
+      const { data, error } =
+        await db.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
 
+      if (error) {
+        throw error;
+      }
 
-loginBtn.onclick = async ()=>{
+      if (!data.user) {
+        throw new Error("Login failed.");
+      }
 
-loginMsg.className="msg";
 
-const e = email.value.trim();
-const p = password.value;
+      /* Check whether logged-in user is an admin */
 
-if(!e || !p){
+      const { data: adminData, error: adminError } =
+        await db
+          .from("admins")
+          .select("user_id")
+          .eq("user_id", data.user.id)
+          .maybeSingle();
 
-message(
-loginMsg,
-"Email aur password enter karo.",
-"error"
-);
 
-return;
+      if (adminError) {
+        throw adminError;
+      }
 
-}
+      if (!adminData) {
 
-loginBtn.disabled=true;
-loginBtn.textContent="LOGIN...";
+        await db.auth.signOut();
 
-const {data,error} =
-await db.auth.signInWithPassword({
-email:e,
-password:p
-});
+        throw new Error(
+          "This account is not registered as an admin."
+        );
+      }
 
-loginBtn.disabled=false;
-loginBtn.textContent="LOGIN";
 
-if(error){
+      /* Login successful */
 
-message(
-loginMsg,
-"Login failed: " + error.message,
-"error"
-);
+      loginScreen.style.display = "none";
+      adminPanel.classList.add("active");
 
-return;
+      await loadProducts();
 
-}
+    } catch (error) {
 
-if(data.session){
+      console.error(error);
 
-showPanel();
+      showMessage(
+        loginMessage,
+        error.message || "Login failed.",
+        "error"
+      );
 
-}
+    } finally {
 
-};
+      loginBtn.disabled = false;
+      loginBtn.textContent = "LOGIN";
+    }
+  }
 
 
-logout.onclick = async ()=>{
+  /* =========================================================
+     LOGOUT
+     ========================================================= */
 
-await db.auth.signOut();
+  logoutBtn.addEventListener("click", async function() {
 
-editing=null;
-form.reset();
+    await db.auth.signOut();
 
-showLogin();
+    adminPanel.classList.remove("active");
+    loginScreen.style.display = "block";
 
-};
+    emailInput.value = "";
+    passwordInput.value = "";
 
+    clearMessage(loginMessage);
 
-/* =========================
-   IMAGE UPLOAD
-========================= */
+  });
 
-async function uploadImage(file,userId){
 
-if(!file) return "";
+  /* =========================================================
+     CHECK EXISTING SESSION
+     ========================================================= */
 
-const ext =
-file.name.includes(".")
-? file.name.split(".").pop().toLowerCase()
-: "jpg";
+  async function checkSession() {
 
-const path =
-userId + "/" +
-Date.now() + "-" +
-Math.random().toString(36).slice(2) +
-"." + ext;
+    try {
 
-const {error} =
-await db.storage
-.from("products")
-.upload(
-path,
-file,
-{
-upsert:false,
-contentType:file.type
-}
-);
+      const {
+        data: { session }
+      } = await db.auth.getSession();
 
-if(error) throw error;
+      if (!session) {
+        return;
+      }
 
-const {data} =
-db.storage
-.from("products")
-.getPublicUrl(path);
+      const { data: adminData, error } =
+        await db
+          .from("admins")
+          .select("user_id")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
 
-return data.publicUrl;
+      if (error || !adminData) {
 
-}
+        await db.auth.signOut();
+        return;
+      }
 
+      loginScreen.style.display = "none";
+      adminPanel.classList.add("active");
 
-/* =========================
-   ADD / EDIT
-========================= */
+      await loadProducts();
 
-form.onsubmit = async e=>{
+    } catch (error) {
 
-e.preventDefault();
+      console.error(error);
+    }
+  }
 
-formMsg.className="msg";
 
-const {data:userData} =
-await db.auth.getUser();
+  /* =========================================================
+     IMAGE PREVIEW
+     ========================================================= */
 
-const user=userData.user;
+  productImage.addEventListener("change", function() {
 
-if(!user){
+    const file = productImage.files[0];
 
-showLogin();
-return;
+    if (!file) {
+      imagePreview.style.display = "none";
+      imagePreview.src = "";
+      return;
+    }
 
-}
+    const url = URL.createObjectURL(file);
 
-save.disabled=true;
-save.textContent =
-editing ? "UPDATING..." : "ADDING...";
+    imagePreview.src = url;
+    imagePreview.style.display = "block";
+  });
 
-try{
 
-let imageUrl =
-editing ? editing.image_url || "" : "";
+  /* =========================================================
+     UPLOAD IMAGE
+     ========================================================= */
 
-const file=imageInput.files[0];
+  async function uploadImage(file) {
 
-if(file){
+    if (!file) {
+      return "";
+    }
 
-imageUrl=await uploadImage(
-file,
-user.id
-);
+    const extension =
+      file.name.split(".").pop().toLowerCase();
 
-}
+    const fileName =
+      Date.now() +
+      "-" +
+      Math.random().toString(36).substring(2) +
+      "." +
+      extension;
 
-const product={
+    const filePath = "products/" + fileName;
 
-name:nameInput.value.trim(),
 
-price:Number(priceInput.value),
+    const { error: uploadError } =
+      await db.storage
+        .from("products")
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: file.type
+        });
 
-stock:Number(stockInput.value),
 
-description:descriptionInput.value.trim(),
+    if (uploadError) {
+      throw uploadError;
+    }
 
-image_url:imageUrl
 
-};
+    const {
+      data: publicData
+    } = db.storage
+      .from("products")
+      .getPublicUrl(filePath);
 
 
-if(editing){
+    return publicData.publicUrl;
+  }
 
-const {error} =
-await db
-.from("products")
-.update(product)
-.eq("id",editing.id);
 
-if(error) throw error;
+  /* =========================================================
+     ADD / UPDATE PRODUCT
+     ========================================================= */
 
-message(
-formMsg,
-"Product successfully updated.",
-"success"
-);
+  saveProductBtn.addEventListener(
+    "click",
+    saveProduct
+  );
 
-}else{
 
-const {error} =
-await db
-.from("products")
-.insert(product);
+  async function saveProduct() {
 
-if(error) throw error;
+    clearMessage(productMessage);
 
-message(
-formMsg,
-"Product successfully added.",
-"success"
-);
+    const id = productId.value.trim();
 
-}
+    const name = productName.value.trim();
+    const description =
+      productDescription.value.trim();
 
-resetForm();
-loadProducts();
+    const price =
+      Number(productPrice.value);
 
-}catch(error){
+    const stock =
+      Number(productStock.value);
 
-message(
-formMsg,
-error.message,
-"error"
-);
+    const imageFile =
+      productImage.files[0];
 
-}
 
-save.disabled=false;
-save.textContent =
-editing ? "UPDATE PRODUCT" : "ADD PRODUCT";
+    if (!name) {
+      showMessage(
+        productMessage,
+        "Please enter product name.",
+        "error"
+      );
+      return;
+    }
 
-};
+    if (
+      productPrice.value === "" ||
+      Number.isNaN(price) ||
+      price < 0
+    ) {
+      showMessage(
+        productMessage,
+        "Please enter a valid price.",
+        "error"
+      );
+      return;
+    }
 
+    if (
+      productStock.value === "" ||
+      Number.isNaN(stock) ||
+      stock < 0
+    ) {
+      showMessage(
+        productMessage,
+        "Please enter a valid stock quantity.",
+        "error"
+      );
+      return;
+    }
 
-/* =========================
-   LOAD PRODUCTS
-========================= */
 
-async function loadProducts(){
+    saveProductBtn.disabled = true;
+    saveProductBtn.textContent =
+      id ? "UPDATING..." : "ADDING...";
 
-products.innerHTML =
-'<div class="empty">Loading products...</div>';
 
-const {data,error} =
-await db
-.from("products")
-.select("*")
-.order(
-"created_at",
-{ascending:false}
-);
+    try {
 
-if(error){
+      let imageUrl = "";
 
-products.innerHTML =
-'<div class="empty">Products load nahi ho rahe.<br><br>'+
-escapeHTML(error.message)+
-'</div>';
 
-return;
+      /* Upload new image if selected */
 
-}
+      if (imageFile) {
 
-if(!data || data.length===0){
+        imageUrl =
+          await uploadImage(imageFile);
+      }
 
-products.innerHTML =
-'<div class="empty">'+
-'Abhi koi product nahi hai.<br>'+
-'Apna first product add karo.'+
-'</div>';
 
-return;
+      /* UPDATE */
 
-}
+      if (id) {
 
-products.innerHTML =
-data.map(p=>`
+        const updateData = {
+          name: name,
+          description: description,
+          price: price,
+          stock: stock
+        };
 
-<div class="product">
+        if (imageUrl) {
+          updateData.image_url = imageUrl;
+        }
 
-${
-p.image_url
-? `<img src="${escapeHTML(p.image_url)}" alt="${escapeHTML(p.name)}">`
-: `<div style="height:230px;display:flex;align-items:center;justify-content:center;color:#777">
-AR COLLECTION
-</div>`
-}
 
-<div class="info">
+        const {
+          error
+        } = await db
+          .from("products")
+          .update(updateData)
+          .eq("id", id);
 
-<h3>${escapeHTML(p.name)}</h3>
 
-<div class="price">
-Rs. ${escapeHTML(p.price)}
-</div>
+        if (error) {
+          throw error;
+        }
 
-<div style="color:#999">
-Stock: ${escapeHTML(p.stock)}
-</div>
 
-<p style="color:#888">
-${escapeHTML(p.description || "")}
-</p>
+        showMessage(
+          productMessage,
+          "Product updated successfully.",
+          "success"
+        );
 
-<div class="actions">
+      }
 
-<button
-class="edit"
-onclick="editProduct('${p.id}')">
-EDIT
-</button>
 
-<button
-class="delete"
-onclick="deleteProduct('${p.id}')">
-DELETE
-</button>
+      /* ADD */
 
-</div>
+      else {
 
-</div>
-</div>
+        const {
+          error
+        } = await db
+          .from("products")
+          .insert({
+            name: name,
+            description: description,
+            price: price,
+            stock: stock,
+            image_url: imageUrl
+          });
 
-`).join("");
 
-}
+        if (error) {
+          throw error;
+        }
 
 
-/* =========================
-   EDIT
-========================= */
+        showMessage(
+          productMessage,
+          "Product added successfully.",
+          "success"
+        );
+      }
 
-window.editProduct = async id=>{
 
-const {data,error} =
-await db
-.from("products")
-.select("*")
-.eq("id",id)
-.single();
+      resetForm();
+      await loadProducts();
 
-if(error){
+    } catch (error) {
 
-alert(error.message);
-return;
+      console.error(error);
 
-}
+      showMessage(
+        productMessage,
+        error.message ||
+        "Could not save product.",
+        "error"
+      );
 
-editing=data;
+    } finally {
 
-nameInput.value=data.name || "";
-priceInput.value=data.price ?? "";
-stockInput.value=data.stock ?? "";
-descriptionInput.value=data.description || "";
-imageInput.value="";
+      saveProductBtn.disabled = false;
 
-save.textContent="UPDATE PRODUCT";
-cancel.classList.remove("hidden");
+      saveProductBtn.textContent =
+        productId.value
+          ? "UPDATE PRODUCT"
+          : "ADD PRODUCT";
+    }
+  }
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
 
-};
+  /* =========================================================
+     LOAD PRODUCTS
+     ========================================================= */
 
+  refreshBtn.addEventListener(
+    "click",
+    loadProducts
+  );
 
-/* =========================
-   CANCEL
-========================= */
 
-cancel.onclick=()=>{
+  async function loadProducts() {
 
-resetForm();
+    productsList.innerHTML =
+      '<div class="loading">Loading products...</div>';
 
-};
 
+    try {
 
-function resetForm(){
+      const {
+        data,
+        error
+      } = await db
+        .from("products")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
 
-editing=null;
 
-form.reset();
+      if (error) {
+        throw error;
+      }
 
-save.textContent="ADD PRODUCT";
 
-cancel.classList.add("hidden");
+      if (!data || data.length === 0) {
 
-}
+        productsList.innerHTML =
+          '<div class="empty">No products added yet.</div>';
 
+        return;
+      }
 
-/* =========================
-   DELETE
-========================= */
 
-window.deleteProduct = async id=>{
+      productsList.innerHTML = "";
 
-const ok=confirm(
-"Kya tum ye product delete karna chahte ho?"
-);
 
-if(!ok) return;
+      data.forEach(function(product) {
 
-const {error} =
-await db
-.from("products")
-.delete()
-.eq("id",id);
+        const card =
+          document.createElement("div");
 
-if(error){
+        card.className = "product";
 
-alert(
-"Delete failed: " +
-error.message
-);
 
-return;
+        const image =
+          document.createElement("img");
 
-}
+        image.src =
+          product.image_url ||
+          "";
 
-loadProducts();
+        image.alt =
+          product.name || "Product";
 
-};
+        if (!product.image_url) {
+          image.style.display = "none";
+        }
 
 
-/* =========================
-   SECURITY
-========================= */
+        const info =
+          document.createElement("div");
 
-function escapeHTML(value){
+        info.className = "product-info";
 
-return String(value ?? "")
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
 
-}
+        const title =
+          document.createElement("h3");
 
+        title.textContent =
+          product.name;
 
-/* =========================
-   AUTH LISTENER
-========================= */
 
-db.auth.onAuthStateChange(
-(event,session)=>{
+        const desc =
+          document.createElement("p");
 
-if(session){
+        desc.textContent =
+          product.description || "";
 
-showPanel();
 
-}else{
+        const price =
+          document.createElement("p");
 
-showLogin();
+        price.className = "price";
 
-}
+        price.textContent =
+          "PKR " +
+          Number(product.price)
+            .toLocaleString("en-PK");
 
-});
 
+        const stock =
+          document.createElement("p");
 
-start();
+        stock.className = "stock";
+
+        stock.textContent =
+          "Stock: " +
+          product.stock;
+
+
+        const actions =
+          document.createElement("div");
+
+        actions.className = "actions";
+
+
+        const editBtn =
+          document.createElement("button");
+
+        editBtn.className = "edit";
+
+        editBtn.textContent = "EDIT";
+
+        editBtn.addEventListener(
+          "click",
+          function() {
+            editProduct(product);
+          }
+        );
+
+
+        const deleteBtn =
+          document.createElement("button");
+
+        deleteBtn.className = "delete";
+
+        deleteBtn.textContent = "DELETE";
+
+        deleteBtn.addEventListener(
+          "click",
+          function() {
+            deleteProduct(product);
+          }
+        );
+
+
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
+
+
+        info.appendChild(title);
+        info.appendChild(desc);
+        info.appendChild(price);
+        info.appendChild(stock);
+        info.appendChild(actions);
+
+
+        card.appendChild(image);
+        card.appendChild(info);
+
+        productsList.appendChild(card);
+      });
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      productsList.innerHTML =
+        '<div class="empty">Could not load products.</div>';
+    }
+  }
+
+
+  /* =========================================================
+     EDIT PRODUCT
+     ========================================================= */
+
+  function editProduct(product) {
+
+    productId.value =
+      product.id;
+
+    productName.value =
+      product.name || "";
+
+    productDescription.value =
+      product.description || "";
+
+    productPrice.value =
+      product.price ?? "";
+
+    productStock.value =
+      product.stock ?? "";
+
+
+    if (product.image_url) {
+
+      imagePreview.src =
+        product.image_url;
+
+      imagePreview.style.display =
+        "block";
+
+    } else {
+
+      imagePreview.src = "";
+      imagePreview.style.display =
+        "none";
+    }
+
+
+    formTitle.textContent =
+      "EDIT PRODUCT";
+
+    saveProductBtn.textContent =
+      "UPDATE PRODUCT";
+
+    cancelEditBtn.classList.remove(
+      "hidden"
+    );
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  /* =========================================================
+     DELETE PRODUCT
+     ========================================================= */
+
+  async function deleteProduct(product) {
+
+    const confirmed =
+      confirm(
+        "Delete '" +
+        product.name +
+        "' permanently?"
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    try {
+
+      const {
+        error
+      } = await db
+        .from("products")
+        .delete()
+        .eq("id", product.id);
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      await loadProducts();
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.message ||
+        "Could not delete product."
+      );
+    }
+  }
+
+
+  /* =========================================================
+     RESET FORM
+     ========================================================= */
+
+  cancelEditBtn.addEventListener(
+    "click",
+    resetForm
+  );
+
+
+  function resetForm() {
+
+    productId.value = "";
+
+    productName.value = "";
+
+    productDescription.value = "";
+
+    productPrice.value = "";
+
+    productStock.value = "";
+
+    productImage.value = "";
+
+    imagePreview.src = "";
+
+    imagePreview.style.display =
+      "none";
+
+    formTitle.textContent =
+      "ADD PRODUCT";
+
+    saveProductBtn.textContent =
+      "ADD PRODUCT";
+
+    cancelEditBtn.classList.add(
+      "hidden"
+    );
+  }
+
+
+  /* =========================================================
+     START
+     ========================================================= */
+
+  checkSession();
 
 </script>
 
