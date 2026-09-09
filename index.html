@@ -272,14 +272,22 @@ footer{
 </header>
 
 <section class="hero" id="home">
+
   <h1>AR <span>COLLECTION</span></h1>
+
   <p>MEN'S FASHION • PREMIUM STYLE</p>
-  <a class="btn" href="#shop">VIEW COLLECTION</a>
+
+  <a class="btn" href="#shop">
+    VIEW COLLECTION
+  </a>
+
 </section>
 
 <section id="shop">
 
-  <h2 class="section-title">OUR COLLECTION</h2>
+  <h2 class="section-title">
+    OUR COLLECTION
+  </h2>
 
   <div id="loading" class="loading">
     Loading collection...
@@ -293,27 +301,35 @@ footer{
 
 <section id="about">
 
-  <h2 class="section-title">ABOUT AR COLLECTION</h2>
+  <h2 class="section-title">
+    ABOUT AR COLLECTION
+  </h2>
 
   <div class="about">
+
     <p>
-      AR Collection is a premium men's fashion brand focused on
-      modern style, quality and a royal look.
+      AR Collection is a premium men's fashion brand
+      focused on modern style, quality and a royal look.
       Explore our latest collection and discover your style.
     </p>
+
   </div>
 
 </section>
 
 <section id="contact" class="contact">
 
-  <h2 class="section-title">CONTACT</h2>
+  <h2 class="section-title">
+    CONTACT
+  </h2>
 
   <div class="about">
+
     <p>
-      For product information and orders, please contact
-      AR Collection directly.
+      For product information and orders,
+      please contact AR Collection directly.
     </p>
+
   </div>
 
 </section>
@@ -322,19 +338,21 @@ footer{
   © 2026 AR COLLECTION — MEN'S FASHION
 </footer>
 
+
 <script>
 
 const SUPABASE_URL =
 "https://zlbezexsphxoqaldmbyg.supabase.co";
 
 const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoienhiZXpleHNwaHhvcWFsZG1ieWciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODg1NjA2NiwiZXhwIjoyMTA0NDMyMDY2fQ.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmV6ZXhzcGh4b3FhbGRtYnlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTYwNjYsImV4cCI6MjEwNDQzMjA2Nn0.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
 
 const supabaseClient =
 window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
+
 
 const productsBox =
 document.getElementById("products");
@@ -360,16 +378,18 @@ function escapeHTML(value){
 
 async function loadProducts(){
 
-  loading.style.display="block";
-  errorBox.style.display="none";
+  loading.style.display = "block";
+  errorBox.style.display = "none";
 
-  const { data, error } =
+  const {data,error} =
     await supabaseClient
       .from("products")
       .select("*")
       .order("created_at",{ascending:false});
 
-  loading.style.display="none";
+
+  loading.style.display = "none";
+
 
   if(error){
 
@@ -378,33 +398,44 @@ async function loadProducts(){
     errorBox.textContent =
       "Collection load nahi ho rahi. Please try again.";
 
-    errorBox.style.display="block";
+    errorBox.style.display = "block";
 
     return;
   }
 
-  if(!data || data.length===0){
 
-    productsBox.innerHTML=`
+  if(!data || data.length === 0){
+
+    productsBox.innerHTML = `
       <div class="empty">
-        <h3>Collection Coming Soon</h3>
-        <p>Our new products will appear here soon.</p>
+
+        <h3>
+          Collection Coming Soon
+        </h3>
+
+        <p>
+          Our new products will appear here soon.
+        </p>
+
       </div>
     `;
 
     return;
   }
 
+
   productsBox.innerHTML =
-    data.map(product=>{
+    data.map(product => {
 
       const image =
         product.image_url
         ? escapeHTML(product.image_url)
         : "";
 
+
       const stock =
         Number(product.stock || 0);
+
 
       return `
 
@@ -412,12 +443,14 @@ async function loadProducts(){
 
           ${
             image
+
             ? `
               <img
                 src="${image}"
                 alt="${escapeHTML(product.name)}"
               >
             `
+
             : `
               <div class="no-image">
                 AR COLLECTION
@@ -425,27 +458,36 @@ async function loadProducts(){
             `
           }
 
+
           <div class="info">
 
             <h3>
               ${escapeHTML(product.name)}
             </h3>
 
+
             <div class="description">
               ${escapeHTML(product.description || "")}
             </div>
+
 
             <div class="price">
               Rs. ${escapeHTML(product.price)}
             </div>
 
+
             <div class="stock">
+
               ${
                 stock > 0
+
                 ? "In Stock: " + stock
+
                 : "Currently Out of Stock"
               }
+
             </div>
+
 
             <button
               class="view-btn"
@@ -469,13 +511,17 @@ async function loadProducts(){
 }
 
 
-function showProduct(name,description,price){
+function showProduct(
+  name,
+  description,
+  price
+){
 
   alert(
     name +
-    "\\n\\n" +
+    "\n\n" +
     description +
-    "\\n\\nPrice: Rs. " +
+    "\n\nPrice: Rs. " +
     price
   );
 
