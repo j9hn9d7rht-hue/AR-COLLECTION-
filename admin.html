@@ -2,209 +2,188 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AR Collection - Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AR Collection - Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
-  margin:0;
+  font-family:Arial, sans-serif;
   background:#050505;
   color:#fff;
-  font-family:Arial,sans-serif;
+  min-height:100vh;
+}
+
+.gold{
+  color:#d4af37;
 }
 
 .container{
   width:92%;
   max-width:1100px;
-  margin:30px auto;
+  margin:auto;
+}
+
+/* LOGIN */
+#loginPage{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login-box{
+  width:100%;
+  max-width:420px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:18px;
+  padding:35px 25px;
+  box-shadow:0 0 30px rgba(212,175,55,.12);
+  text-align:center;
 }
 
 .logo{
-  text-align:center;
-  margin-bottom:30px;
+  width:90px;
+  height:90px;
+  object-fit:contain;
+  margin-bottom:15px;
 }
 
-.logo h1{
-  margin:0;
-  font-size:34px;
-  letter-spacing:4px;
+.login-box h1{
   color:#d4af37;
+  margin-bottom:8px;
 }
 
-.logo p{
-  margin-top:10px;
-  font-size:18px;
-  letter-spacing:2px;
+.login-box p{
   color:#aaa;
+  margin-bottom:25px;
 }
 
-.card{
-  background:#111;
-  border:1px solid #333;
-  border-radius:15px;
-  padding:25px;
-  margin-bottom:20px;
-}
-
-h2{
-  color:#d4af37;
-  margin-top:0;
-}
-
-label{
-  display:block;
-  margin-top:12px;
-  margin-bottom:6px;
-  color:#ddd;
-}
-
-input,textarea{
+input, textarea, select{
   width:100%;
   padding:14px;
-  border-radius:9px;
-  border:1px solid #444;
+  margin-bottom:15px;
   background:#080808;
-  color:white;
-  font-size:16px;
+  color:#fff;
+  border:1px solid #444;
+  border-radius:9px;
   outline:none;
 }
 
-input:focus,textarea:focus{
+input:focus, textarea:focus, select:focus{
   border-color:#d4af37;
 }
 
 textarea{
-  min-height:110px;
+  min-height:100px;
   resize:vertical;
 }
 
 button{
-  padding:13px 20px;
-  border-radius:9px;
-  border:none;
   cursor:pointer;
+  border:none;
+  border-radius:9px;
+  padding:13px 20px;
   font-weight:bold;
-  font-size:15px;
-  margin-top:10px;
-  margin-right:6px;
 }
 
-.gold{
+.gold-btn{
+  width:100%;
   background:#d4af37;
   color:#000;
+  margin-top:5px;
 }
 
-.dark{
-  background:#222;
-  color:#fff;
-  border:1px solid #444;
-}
-
-.danger{
-  background:#b91c1c;
-  color:white;
-}
-
-.hidden{
-  display:none!important;
+.gold-btn:hover{
+  background:#f0d060;
 }
 
 .message{
-  padding:13px;
-  border-radius:9px;
   margin-top:15px;
-  background:#191919;
-  border:1px solid #333;
+  color:#ff7777;
 }
 
-.topbar{
+/* ADMIN */
+#adminPage{
+  display:none;
+  padding-bottom:50px;
+}
+
+header{
+  background:#0c0c0c;
+  border-bottom:1px solid #292929;
+  padding:15px 0;
+  margin-bottom:30px;
+}
+
+.header-inner{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:15px;
-  flex-wrap:wrap;
 }
 
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:18px;
-}
-
-.product{
-  background:#080808;
-  border:1px solid #333;
-  border-radius:12px;
-  overflow:hidden;
-}
-
-.product img{
-  width:100%;
-  height:230px;
-  object-fit:cover;
-  display:block;
-}
-
-.no-image{
-  height:230px;
+.header-brand{
   display:flex;
   align-items:center;
-  justify-content:center;
-  color:#777;
-  background:#151515;
+  gap:12px;
 }
 
-.product-content{
-  padding:16px;
+.header-brand img{
+  width:55px;
+  height:55px;
+  object-fit:contain;
 }
 
-.product h3{
-  margin:0 0 8px;
+.header-brand h2{
   color:#d4af37;
-  font-size:20px;
 }
 
-.product-description{
-  color:#bbb;
-  line-height:1.5;
+.logout{
+  background:#222;
+  color:#fff;
+  border:1px solid #555;
 }
 
-.price{
-  margin-top:10px;
-  font-size:18px;
-  font-weight:bold;
-}
-
-.stock{
-  margin-top:7px;
-  color:#999;
-}
-
-.product-sizes{
-  margin-top:10px;
+.logout:hover{
+  border-color:#d4af37;
   color:#d4af37;
-  font-size:13px;
-  line-height:1.6;
 }
 
-.preview{
-  width:180px;
-  height:180px;
-  object-fit:cover;
-  border-radius:10px;
-  margin-top:12px;
-  display:none;
+.panel{
+  background:#101010;
+  border:1px solid #2b2b2b;
+  border-radius:16px;
+  padding:25px;
+  margin-bottom:25px;
 }
 
-.size-options{
+.panel h2{
+  color:#d4af37;
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  margin-bottom:7px;
+  color:#ccc;
+  font-size:14px;
+}
+
+.size-box{
   display:flex;
   flex-wrap:wrap;
-  gap:8px;
-  margin-top:8px;
+  gap:10px;
+  margin-bottom:20px;
 }
 
 .size-option{
@@ -219,768 +198,761 @@ button{
 
 .size-option label{
   display:block;
-  margin:0;
-  padding:10px 15px;
+  padding:10px 16px;
   border:1px solid #555;
   border-radius:8px;
-  color:#ddd;
-  background:#080808;
   cursor:pointer;
-  font-weight:bold;
-  font-size:13px;
+  color:#ddd;
+  margin:0;
 }
 
 .size-option input:checked + label{
   background:#d4af37;
   color:#000;
   border-color:#d4af37;
+  font-weight:bold;
+}
+
+.image-preview{
+  display:none;
+  width:150px;
+  height:180px;
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid #555;
+  margin:10px 0 20px;
+}
+
+.form-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.save-btn{
+  background:#d4af37;
+  color:#000;
+  flex:1;
+}
+
+.cancel-btn{
+  background:#292929;
+  color:#fff;
+  flex:1;
+}
+
+.products-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+  gap:10px;
+}
+
+.refresh-btn{
+  background:#222;
+  color:#d4af37;
+  border:1px solid #555;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+}
+
+.product{
+  background:#080808;
+  border:1px solid #292929;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.product img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  background:#151515;
+}
+
+.product-content{
+  padding:17px;
+}
+
+.product h3{
+  color:#d4af37;
+  margin-bottom:8px;
+}
+
+.product p{
+  color:#aaa;
+  margin-bottom:8px;
+  line-height:1.5;
+}
+
+.price{
+  color:#fff !important;
+  font-weight:bold;
+}
+
+.stock{
+  color:#bbb !important;
+}
+
+.sizes{
+  color:#d4af37 !important;
+}
+
+.product-actions{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+.edit-btn{
+  flex:1;
+  background:#222;
+  color:#d4af37;
+  border:1px solid #555;
+}
+
+.delete-btn{
+  flex:1;
+  background:#5b1111;
+  color:#fff;
+}
+
+.empty{
+  color:#888;
+  text-align:center;
+  padding:30px;
 }
 
 @media(max-width:600px){
-  .container{width:94%}
-  .logo h1{font-size:27px}
-  .card{padding:20px}
-  .product img,.no-image{height:210px}
+  .panel{
+    padding:18px;
+  }
+
+  .header-brand h2{
+    font-size:18px;
+  }
+
+  .products{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+
+  <div class="login-box">
+
+    <img src="logo.png" class="logo" alt="AR Collection">
+
+    <h1>AR COLLECTION</h1>
+    <p>Admin Panel</p>
+
+    <input
+      type="email"
+      id="email"
+      placeholder="Admin Email"
+      autocomplete="email"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      autocomplete="current-password"
+    >
+
+    <button class="gold-btn" onclick="login()">
+      LOGIN
+    </button>
+
+    <div id="loginMessage" class="message"></div>
+
+  </div>
+
+</div>
+
+
+<!-- ADMIN PAGE -->
+<div id="adminPage">
+
+<header>
+  <div class="container header-inner">
+
+    <div class="header-brand">
+      <img src="logo.png" alt="AR Collection">
+      <h2>AR COLLECTION ADMIN</h2>
+    </div>
+
+    <button class="logout" onclick="logout()">
+      LOGOUT
+    </button>
+
+  </div>
+</header>
+
+
 <div class="container">
 
-<div class="logo">
-  <h1>AR COLLECTION</h1>
-  <p>ADMIN PANEL</p>
-</div>
+<!-- ADD / EDIT PRODUCT -->
+<div class="panel">
 
-<div id="loginBox" class="card">
+  <h2 id="formTitle">Add Product</h2>
 
-  <h2>ADMIN LOGIN</h2>
+  <input type="hidden" id="productId">
 
-  <label>Admin Email</label>
+  <label>Product Name</label>
   <input
-    id="email"
-    type="email"
-    placeholder="Enter admin email"
-    autocomplete="email"
+    type="text"
+    id="productName"
+    placeholder="Example: Premium Black Shirt"
   >
 
-  <label>Password</label>
+  <label>Description</label>
+  <textarea
+    id="productDescription"
+    placeholder="Product description"
+  ></textarea>
+
+  <label>Price</label>
   <input
-    id="password"
-    type="password"
-    placeholder="Enter password"
-    autocomplete="current-password"
+    type="number"
+    id="productPrice"
+    placeholder="2999"
+    min="0"
   >
 
-  <button class="gold" onclick="login()">LOGIN</button>
+  <label>Stock</label>
+  <input
+    type="number"
+    id="productStock"
+    placeholder="10"
+    min="0"
+  >
 
-  <div id="loginMessage" class="message hidden"></div>
+  <label>Select Sizes</label>
 
-</div>
+  <div class="size-box">
 
-<div id="adminPanel" class="hidden">
+    <div class="size-option">
+      <input type="checkbox" id="sizeS" value="S">
+      <label for="sizeS">S</label>
+    </div>
 
-  <div class="card">
+    <div class="size-option">
+      <input type="checkbox" id="sizeM" value="M">
+      <label for="sizeM">M</label>
+    </div>
 
-    <div class="topbar">
+    <div class="size-option">
+      <input type="checkbox" id="sizeL" value="L">
+      <label for="sizeL">L</label>
+    </div>
 
-      <div>
-        <h2>AR Collection Admin</h2>
-        <p style="color:#999;">
-          Manage your products here.
-        </p>
-      </div>
+    <div class="size-option">
+      <input type="checkbox" id="sizeXL" value="XL">
+      <label for="sizeXL">XL</label>
+    </div>
 
-      <button class="danger" onclick="logout()">
-        LOGOUT
-      </button>
+    <div class="size-option">
+      <input type="checkbox" id="sizeXXL" value="XXL">
+      <label for="sizeXXL">XXL</label>
+    </div>
 
+    <div class="size-option">
+      <input type="checkbox" id="size3XL" value="3XL">
+      <label for="size3XL">3XL</label>
     </div>
 
   </div>
 
-  <div class="card">
+  <label>Product Image</label>
 
-    <h2 id="formTitle">Add Product</h2>
+  <input
+    type="file"
+    id="productImage"
+    accept="image/*"
+    onchange="previewImage(event)"
+  >
 
-    <label>Product Name</label>
+  <img id="imagePreview" class="image-preview" alt="Preview">
 
-    <input
-      id="productName"
-      type="text"
-      placeholder="Example: Premium Black Shirt"
-    >
+  <div class="form-buttons">
 
-    <label>Description</label>
-
-    <textarea
-      id="productDescription"
-      placeholder="Product description"
-    ></textarea>
-
-    <label>Price</label>
-
-    <input
-      id="productPrice"
-      type="number"
-      min="0"
-      step="0.01"
-      placeholder="Example: 2999"
-    >
-
-    <label>Stock</label>
-
-    <input
-      id="productStock"
-      type="number"
-      min="0"
-      step="1"
-      placeholder="Example: 20"
-    >
-
-    <label>Available Sizes</label>
-
-    <div class="size-options">
-
-      <div class="size-option">
-        <input type="checkbox" id="sizeS" value="S">
-        <label for="sizeS">S</label>
-      </div>
-
-      <div class="size-option">
-        <input type="checkbox" id="sizeM" value="M">
-        <label for="sizeM">M</label>
-      </div>
-
-      <div class="size-option">
-        <input type="checkbox" id="sizeL" value="L">
-        <label for="sizeL">L</label>
-      </div>
-
-      <div class="size-option">
-        <input type="checkbox" id="sizeXL" value="XL">
-        <label for="sizeXL">XL</label>
-      </div>
-
-      <div class="size-option">
-        <input type="checkbox" id="sizeXXL" value="XXL">
-        <label for="sizeXXL">XXL</label>
-      </div>
-
-      <div class="size-option">
-        <input type="checkbox" id="size3XL" value="3XL">
-        <label for="size3XL">3XL</label>
-      </div>
-
-    </div>
-
-    <label>Product Image</label>
-
-    <input
-      id="productImage"
-      type="file"
-      accept="image/*"
-      onchange="previewImage(event)"
-    >
-
-    <img
-      id="imagePreview"
-      class="preview"
-      alt="Image Preview"
-    >
-
-    <br>
-
-    <button class="gold" onclick="saveProduct()">
+    <button class="save-btn" onclick="saveProduct()">
       SAVE PRODUCT
     </button>
 
-    <button
-      id="cancelButton"
-      class="dark hidden"
-      onclick="cancelEdit()"
-    >
+    <button class="cancel-btn" onclick="resetForm()">
       CANCEL
     </button>
 
-    <div id="productMessage" class="message hidden"></div>
+  </div>
+
+  <div id="formMessage" class="message"></div>
+
+</div>
+
+
+<!-- PRODUCTS -->
+<div class="panel">
+
+  <div class="products-header">
+
+    <h2>All Products</h2>
+
+    <button class="refresh-btn" onclick="loadProducts()">
+      REFRESH
+    </button>
 
   </div>
 
-  <div class="card">
-
-    <div class="topbar">
-
-      <h2>All Products</h2>
-
-      <button class="dark" onclick="loadProducts()">
-        REFRESH
-      </button>
-
-    </div>
-
-    <div id="products" class="products"></div>
-
+  <div id="products" class="products">
+    <div class="empty">Loading products...</div>
   </div>
 
 </div>
 
 </div>
+</div>
+
 
 <script>
 
-const SUPABASE_URL=
+const SUPABASE_URL =
 "https://zlbezexsphxoqaldmbyg.supabase.co";
 
-const SUPABASE_ANON_KEY=
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6InpsYmV6ZXNwaHhvcWFsZG1ieWciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODg1NjA2NiwiZXhwIjoyMTA0NDMyMDY2fQ.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IjpsYmV6ZXNwaHhvcWFsZG1ieWciLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4ODg1NjA2NiwiZXhwIjoyMTA0NDMyMDY2fQ.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
 
-const db=window.supabase.createClient(
+const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
 
-let editingProductId=null;
-let editingImageUrl=null;
 
-function escapeHtml(value){
-  return String(value??"")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-function showMessage(elementId,text,error=false){
-
-  const box=document.getElementById(elementId);
-
-  box.textContent=text;
-  box.classList.remove("hidden");
-
-  box.style.color=error
-    ? "#ff8b8b"
-    : "#8ee28e";
-}
-
-function getSelectedSizes(){
-
-  const ids=[
-    "sizeS",
-    "sizeM",
-    "sizeL",
-    "sizeXL",
-    "sizeXXL",
-    "size3XL"
-  ];
-
-  return ids
-    .map(id=>document.getElementById(id))
-    .filter(input=>input.checked)
-    .map(input=>input.value);
-}
-
-function setSelectedSizes(sizes){
-
-  const available=[
-    "S","M","L","XL","XXL","3XL"
-  ];
-
-  available.forEach(size=>{
-
-    const id=
-      size==="S" ? "sizeS" :
-      size==="M" ? "sizeM" :
-      size==="L" ? "sizeL" :
-      size==="XL" ? "sizeXL" :
-      size==="XXL" ? "sizeXXL" :
-      "size3XL";
-
-    document.getElementById(id).checked=
-      Array.isArray(sizes) &&
-      sizes.includes(size);
-  });
-}
-
-function clearForm(){
-
-  document.getElementById("productName").value="";
-  document.getElementById("productDescription").value="";
-  document.getElementById("productPrice").value="";
-  document.getElementById("productStock").value="";
-  document.getElementById("productImage").value="";
-
-  setSelectedSizes([]);
-
-  const preview=document.getElementById("imagePreview");
-
-  preview.src="";
-  preview.style.display="none";
-
-  editingProductId=null;
-  editingImageUrl=null;
-
-  document.getElementById("formTitle").textContent=
-    "Add Product";
-
-  document.getElementById("cancelButton")
-    .classList.add("hidden");
-}
-
-function previewImage(event){
-
-  const file=event.target.files[0];
-
-  if(!file) return;
-
-  const preview=document.getElementById("imagePreview");
-
-  preview.src=URL.createObjectURL(file);
-  preview.style.display="block";
-}
+/* LOGIN */
 
 async function login(){
 
-  const email=document
-    .getElementById("email")
-    .value
-    .trim();
+  const email =
+    document.getElementById("email").value.trim();
 
-  const password=document
-    .getElementById("password")
-    .value;
+  const password =
+    document.getElementById("password").value;
+
+  const message =
+    document.getElementById("loginMessage");
+
+  message.textContent = "";
 
   if(!email || !password){
+    message.textContent =
+      "Email aur password enter karo.";
+    return;
+  }
 
-    showMessage(
-      "loginMessage",
-      "Email aur password enter karo.",
-      true
-    );
+  const { data, error } =
+    await db.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+  if(error){
+
+    message.textContent =
+      error.message;
 
     return;
   }
 
-  showMessage(
-    "loginMessage",
-    "Login ho raha hai..."
-  );
+  if(data.session){
 
-  try{
+    document.getElementById("loginPage").style.display =
+      "none";
 
-    const response=await fetch(
-      SUPABASE_URL+
-      "/auth/v1/token?grant_type=password",
-      {
-        method:"POST",
-
-        headers:{
-          "Content-Type":"application/json",
-          "apikey":SUPABASE_ANON_KEY
-        },
-
-        body:JSON.stringify({
-          email:email,
-          password:password
-        })
-      }
-    );
-
-    const result=await response.json();
-
-    if(!response.ok){
-
-      throw new Error(
-        result.msg ||
-        result.message ||
-        result.error_description ||
-        "Login failed."
-      );
-    }
-
-    if(
-      !result.access_token ||
-      !result.refresh_token
-    ){
-
-      throw new Error(
-        "Supabase session nahi mili."
-      );
-    }
-
-    const sessionResult=
-      await db.auth.setSession({
-        access_token:result.access_token,
-        refresh_token:result.refresh_token
-      });
-
-    if(sessionResult.error){
-      throw sessionResult.error;
-    }
-
-    const adminCheck=
-      await db.rpc("is_admin");
-
-    if(adminCheck.error){
-      throw adminCheck.error;
-    }
-
-    if(adminCheck.data!==true){
-
-      await db.auth.signOut();
-
-      throw new Error(
-        "Ye account admin nahi hai."
-      );
-    }
-
-    document
-      .getElementById("loginBox")
-      .classList.add("hidden");
-
-    document
-      .getElementById("adminPanel")
-      .classList.remove("hidden");
+    document.getElementById("adminPage").style.display =
+      "block";
 
     await loadProducts();
-
-  }catch(error){
-
-    console.error("LOGIN ERROR:",error);
-
-    showMessage(
-      "loginMessage",
-      error.message || "Login failed.",
-      true
-    );
   }
 }
+
+
+/* LOGOUT */
 
 async function logout(){
 
   await db.auth.signOut();
 
-  document
-    .getElementById("adminPanel")
-    .classList.add("hidden");
+  document.getElementById("adminPage").style.display =
+    "none";
 
-  document
-    .getElementById("loginBox")
-    .classList.remove("hidden");
+  document.getElementById("loginPage").style.display =
+    "flex";
 
-  document.getElementById("password").value="";
-
-  clearForm();
+  document.getElementById("email").value = "";
+  document.getElementById("password").value = "";
 }
+
+
+/* SESSION CHECK */
 
 async function checkSession(){
 
-  try{
+  const { data } =
+    await db.auth.getSession();
 
-    const session=
-      await db.auth.getSession();
+  if(data.session){
 
-    if(session.error){
-      console.error(session.error);
-      return;
-    }
+    document.getElementById("loginPage").style.display =
+      "none";
 
-    if(!session.data.session){
-      return;
-    }
-
-    const adminCheck=
-      await db.rpc("is_admin");
-
-    if(
-      adminCheck.error ||
-      adminCheck.data!==true
-    ){
-
-      await db.auth.signOut();
-      return;
-    }
-
-    document
-      .getElementById("loginBox")
-      .classList.add("hidden");
-
-    document
-      .getElementById("adminPanel")
-      .classList.remove("hidden");
+    document.getElementById("adminPage").style.display =
+      "block";
 
     await loadProducts();
 
-  }catch(error){
+  }else{
 
-    console.error(
-      "SESSION ERROR:",
-      error
+    document.getElementById("loginPage").style.display =
+      "flex";
+
+    document.getElementById("adminPage").style.display =
+      "none";
+  }
+}
+
+
+/* IMAGE PREVIEW */
+
+function previewImage(event){
+
+  const file =
+    event.target.files[0];
+
+  const preview =
+    document.getElementById("imagePreview");
+
+  if(!file){
+
+    preview.style.display = "none";
+    preview.src = "";
+    return;
+  }
+
+  preview.src =
+    URL.createObjectURL(file);
+
+  preview.style.display = "block";
+}
+
+
+/* GET SIZES */
+
+function getSelectedSizes(){
+
+  const sizes = [];
+
+  document
+    .querySelectorAll(".size-option input:checked")
+    .forEach(input => {
+      sizes.push(input.value);
+    });
+
+  return sizes;
+}
+
+
+/* SET SIZES */
+
+function setSelectedSizes(sizes){
+
+  const all =
+    document.querySelectorAll(
+      ".size-option input"
     );
-  }
+
+  all.forEach(input => {
+
+    input.checked =
+      sizes.includes(input.value);
+
+  });
 }
 
-async function uploadImage(file){
 
-  const extension=
-    file.name.split(".").pop().toLowerCase();
-
-  const fileName=
-    Date.now()+
-    "-" +
-    Math.random()
-      .toString(36)
-      .substring(2)+
-    "."+
-    extension;
-
-  const filePath=
-    "products/"+fileName;
-
-  const uploadResult=
-    await db.storage
-      .from("products")
-      .upload(
-        filePath,
-        file,
-        {
-          cacheControl:"3600",
-          upsert:false
-        }
-      );
-
-  if(uploadResult.error){
-    throw uploadResult.error;
-  }
-
-  const publicResult=
-    db.storage
-      .from("products")
-      .getPublicUrl(filePath);
-
-  return publicResult.data.publicUrl;
-}
+/* SAVE PRODUCT */
 
 async function saveProduct(){
 
-  const name=
-    document
-      .getElementById("productName")
-      .value
-      .trim();
+  const message =
+    document.getElementById("formMessage");
 
-  const description=
-    document
-      .getElementById("productDescription")
-      .value
-      .trim();
+  message.textContent = "";
 
-  const price=
-    document
-      .getElementById("productPrice")
-      .value;
+  const productId =
+    document.getElementById("productId").value;
 
-  const stock=
-    document
-      .getElementById("productStock")
-      .value;
+  const name =
+    document.getElementById("productName").value.trim();
 
-  const imageInput=
-    document.getElementById("productImage");
+  const description =
+    document.getElementById("productDescription").value.trim();
 
-  const sizes=getSelectedSizes();
+  const price =
+    Number(document.getElementById("productPrice").value);
+
+  const stock =
+    Number(document.getElementById("productStock").value);
+
+  const sizes =
+    getSelectedSizes();
+
+  const imageFile =
+    document.getElementById("productImage").files[0];
 
   if(!name){
 
-    showMessage(
-      "productMessage",
-      "Product name enter karo.",
-      true
-    );
+    message.textContent =
+      "Product name enter karo.";
 
     return;
   }
 
-  if(price===""){
+  if(!price || price < 0){
 
-    showMessage(
-      "productMessage",
-      "Price enter karo.",
-      true
-    );
+    message.textContent =
+      "Valid price enter karo.";
 
     return;
   }
 
-  if(stock===""){
+  if(stock < 0 || isNaN(stock)){
 
-    showMessage(
-      "productMessage",
-      "Stock enter karo.",
-      true
-    );
+    message.textContent =
+      "Valid stock enter karo.";
 
     return;
   }
 
-  if(sizes.length===0){
+  let imageUrl = null;
 
-    showMessage(
-      "productMessage",
-      "Kam az kam 1 size select karo.",
-      true
-    );
 
-    return;
+  /* EDIT: existing image */
+
+  if(productId){
+
+    const { data: oldProduct } =
+      await db
+        .from("products")
+        .select("image_url")
+        .eq("id", productId)
+        .single();
+
+    if(oldProduct){
+      imageUrl =
+        oldProduct.image_url || null;
+    }
   }
 
-  try{
 
-    showMessage(
-      "productMessage",
-      "Product save ho raha hai..."
-    );
+  /* UPLOAD NEW IMAGE */
 
-    let imageUrl=editingImageUrl;
+  if(imageFile){
 
-    if(imageInput.files.length>0){
+    const extension =
+      imageFile.name.split(".").pop();
 
-      imageUrl=
-        await uploadImage(
-          imageInput.files[0]
+    const fileName =
+      "product-" +
+      Date.now() +
+      "-" +
+      Math.random()
+        .toString(36)
+        .substring(2) +
+      "." +
+      extension;
+
+    const filePath =
+      fileName;
+
+    const { error: uploadError } =
+      await db.storage
+        .from("products")
+        .upload(
+          filePath,
+          imageFile,
+          {
+            cacheControl:"3600",
+            upsert:false
+          }
         );
+
+    if(uploadError){
+
+      message.textContent =
+        "Image upload error: " +
+        uploadError.message;
+
+      return;
     }
 
-    const productData={
-      name:name,
-      description:description,
-      price:Number(price),
-      stock:Number(stock),
-      sizes:sizes
-    };
+    const { data: publicData } =
+      db.storage
+        .from("products")
+        .getPublicUrl(filePath);
 
-    if(imageUrl){
-      productData.image_url=imageUrl;
-    }
+    imageUrl =
+      publicData.publicUrl;
+  }
 
-    let result;
 
-    if(editingProductId){
+  const productData = {
 
-      result=await db
+    name: name,
+
+    description:
+      description || null,
+
+    price: price,
+
+    stock: stock,
+
+    sizes: sizes,
+
+    image_url: imageUrl
+  };
+
+
+  /* UPDATE */
+
+  if(productId){
+
+    const { error } =
+      await db
         .from("products")
         .update(productData)
-        .eq("id",editingProductId);
+        .eq("id", productId);
 
-    }else{
+    if(error){
 
-      result=await db
+      message.textContent =
+        error.message;
+
+      return;
+    }
+
+    message.style.color = "#d4af37";
+    message.textContent =
+      "Product updated successfully.";
+
+  }
+
+
+  /* INSERT */
+
+  else{
+
+    const { error } =
+      await db
         .from("products")
         .insert(productData);
+
+    if(error){
+
+      message.textContent =
+        error.message;
+
+      return;
     }
 
-    if(result.error){
-      throw result.error;
-    }
-
-    showMessage(
-      "productMessage",
-      editingProductId
-        ? "Product successfully updated."
-        : "Product successfully saved."
-    );
-
-    clearForm();
-
-    await loadProducts();
-
-  }catch(error){
-
-    console.error(
-      "SAVE ERROR:",
-      error
-    );
-
-    showMessage(
-      "productMessage",
-      error.message ||
-      "Product save nahi hua.",
-      true
-    );
+    message.style.color = "#d4af37";
+    message.textContent =
+      "Product saved successfully.";
   }
+
+
+  resetForm();
+  await loadProducts();
 }
+
+
+/* LOAD PRODUCTS */
 
 async function loadProducts(){
 
-  const productsBox=
+  const container =
     document.getElementById("products");
 
-  productsBox.innerHTML=
-    "<p style='color:#aaa;'>Loading products...</p>";
+  container.innerHTML =
+    '<div class="empty">Loading products...</div>';
 
-  const result=
+  const { data, error } =
     await db
       .from("products")
-      .select("*")
+      .select(
+        "id,name,description,price,stock,image_url,sizes,created_at"
+      )
       .order(
         "created_at",
-        {ascending:false}
+        { ascending:false }
       );
 
-  if(result.error){
+  if(error){
 
-    console.error(result.error);
-
-    productsBox.innerHTML=
-      "<p style='color:#ff7777;'>"+
-      "Products load nahi ho rahe: "+
-      escapeHtml(result.error.message)+
-      "</p>";
+    container.innerHTML =
+      '<div class="empty">' +
+      error.message +
+      '</div>';
 
     return;
   }
 
-  const products=result.data||[];
+  if(!data || data.length === 0){
 
-  if(products.length===0){
-
-    productsBox.innerHTML=
-      "<p style='color:#aaa;'>"+
-      "Abhi koi product nahi hai."+
-      "</p>";
+    container.innerHTML =
+      '<div class="empty">No products found.</div>';
 
     return;
   }
 
-  productsBox.innerHTML="";
 
-  products.forEach(product=>{
+  container.innerHTML = "";
 
-    const sizes=
-      Array.isArray(product.sizes)
-      ? product.sizes
-      : [];
 
-    const image=
-      product.image_url
-      ? escapeHtml(product.image_url)
-      :"";
+  data.forEach(product => {
 
-    const card=
+    const card =
       document.createElement("div");
 
-    card.className="product";
+    card.className =
+      "product";
 
-    card.innerHTML=`
 
-      ${
-        image
-        ? `<img src="${image}" alt="${escapeHtml(product.name)}">`
-        : `<div class="no-image">AR COLLECTION</div>`
-      }
+    const image =
+      product.image_url
+      ? `<img src="${escapeHtml(product.image_url)}" alt="${escapeHtml(product.name)}">`
+      : `<div style="height:260px;display:flex;align-items:center;justify-content:center;color:#777;">NO IMAGE</div>`;
+
+
+    const sizes =
+      Array.isArray(product.sizes) &&
+      product.sizes.length
+      ? product.sizes.join(", ")
+      : "Not specified";
+
+
+    card.innerHTML = `
+
+      ${image}
 
       <div class="product-content">
 
@@ -988,173 +960,218 @@ async function loadProducts(){
           ${escapeHtml(product.name)}
         </h3>
 
-        <div class="product-description">
-          ${escapeHtml(product.description||"")}
+        <p>
+          ${escapeHtml(product.description || "")}
+        </p>
+
+        <p class="price">
+          Price: Rs. ${Number(product.price).toLocaleString()}
+        </p>
+
+        <p class="stock">
+          Stock: ${product.stock}
+        </p>
+
+        <p class="sizes">
+          Sizes: ${escapeHtml(sizes)}
+        </p>
+
+        <div class="product-actions">
+
+          <button
+            class="edit-btn"
+            onclick="editProduct('${product.id}')"
+          >
+            EDIT
+          </button>
+
+          <button
+            class="delete-btn"
+            onclick="deleteProduct('${product.id}')"
+          >
+            DELETE
+          </button>
+
         </div>
-
-        <div class="price">
-          Rs. ${escapeHtml(product.price)}
-        </div>
-
-        <div class="stock">
-          Stock: ${escapeHtml(product.stock)}
-        </div>
-
-        <div class="product-sizes">
-          Sizes:
-          ${
-            sizes.length
-            ? sizes.map(escapeHtml).join(", ")
-            : "None"
-          }
-        </div>
-
-        <button
-          class="gold"
-          onclick="editProduct('${product.id}')">
-          EDIT
-        </button>
-
-        <button
-          class="danger"
-          onclick="deleteProduct('${product.id}')">
-          DELETE
-        </button>
 
       </div>
     `;
 
-    productsBox.appendChild(card);
+
+    container.appendChild(card);
+
   });
 }
 
+
+/* EDIT PRODUCT */
+
 async function editProduct(id){
 
-  try{
+  const { data: product, error } =
+    await db
+      .from("products")
+      .select("*")
+      .eq("id", id)
+      .single();
 
-    const result=
-      await db
-        .from("products")
-        .select("*")
-        .eq("id",id)
-        .single();
+  if(error || !product){
 
-    if(result.error){
-      throw result.error;
-    }
-
-    const product=result.data;
-
-    editingProductId=product.id;
-    editingImageUrl=product.image_url||null;
-
-    document
-      .getElementById("productName")
-      .value=product.name||"";
-
-    document
-      .getElementById("productDescription")
-      .value=product.description||"";
-
-    document
-      .getElementById("productPrice")
-      .value=product.price??"";
-
-    document
-      .getElementById("productStock")
-      .value=product.stock??"";
-
-    setSelectedSizes(product.sizes||[]);
-
-    document
-      .getElementById("formTitle")
-      .textContent="Edit Product";
-
-    document
-      .getElementById("cancelButton")
-      .classList.remove("hidden");
-
-    const preview=
-      document.getElementById("imagePreview");
-
-    if(product.image_url){
-
-      preview.src=product.image_url;
-      preview.style.display="block";
-
-    }else{
-
-      preview.src="";
-      preview.style.display="none";
-    }
-
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
-
-  }catch(error){
-
-    console.error(error);
-
-    showMessage(
-      "productMessage",
-      error.message||
-      "Product load nahi hua.",
-      true
+    alert(
+      error
+      ? error.message
+      : "Product not found."
     );
+
+    return;
   }
+
+
+  document.getElementById("productId").value =
+    product.id;
+
+  document.getElementById("productName").value =
+    product.name || "";
+
+  document.getElementById("productDescription").value =
+    product.description || "";
+
+  document.getElementById("productPrice").value =
+    product.price || "";
+
+  document.getElementById("productStock").value =
+    product.stock ?? "";
+
+
+  setSelectedSizes(
+    Array.isArray(product.sizes)
+    ? product.sizes
+    : []
+  );
+
+
+  document.getElementById("formTitle").textContent =
+    "Edit Product";
+
+
+  document.getElementById("formMessage").textContent =
+    "";
+
+
+  const preview =
+    document.getElementById("imagePreview");
+
+  if(product.image_url){
+
+    preview.src =
+      product.image_url;
+
+    preview.style.display =
+      "block";
+
+  }else{
+
+    preview.style.display =
+      "none";
+  }
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
+
+
+/* DELETE PRODUCT */
 
 async function deleteProduct(id){
 
-  const confirmed=
+  const confirmDelete =
     confirm(
       "Kya aap is product ko delete karna chahte hain?"
     );
 
-  if(!confirmed) return;
-
-  try{
-
-    const result=
-      await db
-        .from("products")
-        .delete()
-        .eq("id",id);
-
-    if(result.error){
-      throw result.error;
-    }
-
-    await loadProducts();
-
-    showMessage(
-      "productMessage",
-      "Product deleted successfully."
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    showMessage(
-      "productMessage",
-      error.message||
-      "Product delete nahi hua.",
-      true
-    );
+  if(!confirmDelete){
+    return;
   }
+
+
+  const { error } =
+    await db
+      .from("products")
+      .delete()
+      .eq("id", id);
+
+
+  if(error){
+
+    alert(error.message);
+    return;
+  }
+
+
+  await loadProducts();
 }
 
-function cancelEdit(){
 
-  clearForm();
+/* RESET FORM */
+
+function resetForm(){
+
+  document.getElementById("productId").value =
+    "";
+
+  document.getElementById("productName").value =
+    "";
+
+  document.getElementById("productDescription").value =
+    "";
+
+  document.getElementById("productPrice").value =
+    "";
+
+  document.getElementById("productStock").value =
+    "";
+
+  document.getElementById("productImage").value =
+    "";
 
   document
-    .getElementById("productMessage")
-    .classList.add("hidden");
+    .querySelectorAll(".size-option input")
+    .forEach(input => {
+      input.checked = false;
+    });
+
+
+  document.getElementById("imagePreview").style.display =
+    "none";
+
+  document.getElementById("imagePreview").src =
+    "";
+
+  document.getElementById("formTitle").textContent =
+    "Add Product";
+
+  document.getElementById("formMessage").textContent =
+    "";
 }
+
+
+/* HTML ESCAPE */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+/* START */
 
 checkSession();
 
