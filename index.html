@@ -2,29 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AR COLLECTION | Men's Fashion</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AR COLLECTION | Premium Men's Fashion</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --bg:#080808;
+  --black:#050505;
+  --black2:#0b0b0b;
   --card:#111;
   --gold:#d4af37;
-  --gold2:#f4d878;
+  --gold2:#f5d76e;
   --white:#fff;
   --muted:#aaa;
-  --border:#292929;
+  --line:#272727;
 }
 
 *{box-sizing:border-box}
-
 html{scroll-behavior:smooth}
 
 body{
   margin:0;
-  background:var(--bg);
+  background:var(--black);
   color:var(--white);
   font-family:Arial,Helvetica,sans-serif;
 }
@@ -32,18 +31,31 @@ body{
 header{
   position:sticky;
   top:0;
-  z-index:50;
-  background:rgba(8,8,8,.96);
-  border-bottom:1px solid var(--border);
-  padding:18px 6%;
+  z-index:100;
+  padding:14px 6%;
+  background:rgba(5,5,5,.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
   display:flex;
   align-items:center;
   justify-content:space-between;
 }
 
-.logo{
-  color:var(--gold);
-  font-size:24px;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand img{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+}
+
+.brand-text{
+  color:var(--gold2);
+  font-size:20px;
   font-weight:900;
   letter-spacing:3px;
 }
@@ -51,146 +63,179 @@ header{
 nav a{
   color:#fff;
   text-decoration:none;
-  margin-left:25px;
-  font-size:13px;
+  margin-left:24px;
+  font-size:12px;
   font-weight:bold;
+  letter-spacing:1px;
 }
 
-nav a:hover{
-  color:var(--gold);
-}
+nav a:hover{color:var(--gold2)}
 
 .hero{
-  min-height:72vh;
+  min-height:88vh;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:60px 20px;
+  padding:70px 20px;
+  position:relative;
+  overflow:hidden;
   background:
-    radial-gradient(circle at center,#28220d 0%,#080808 55%);
+    radial-gradient(circle at 50% 35%,rgba(212,175,55,.18),transparent 35%),
+    linear-gradient(180deg,#0b0b0b,#030303);
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  border:1px solid rgba(212,175,55,.18);
+  border-radius:50%;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+}
+
+.hero-logo{
+  width:180px;
+  height:180px;
+  object-fit:contain;
+  margin-bottom:25px;
+  filter:drop-shadow(0 0 25px rgba(212,175,55,.22));
 }
 
 .hero h1{
   margin:0;
-  font-size:clamp(45px,9vw,90px);
-  letter-spacing:6px;
+  font-size:clamp(42px,9vw,88px);
+  letter-spacing:7px;
+  font-weight:900;
 }
 
-.hero h1 span{
-  color:var(--gold);
-}
+.hero h1 span{color:var(--gold2)}
 
 .hero p{
-  color:var(--gold2);
+  color:#ddd;
   letter-spacing:5px;
-  margin:20px 0 35px;
+  font-size:13px;
+  margin:22px 0 35px;
 }
 
 .btn{
   display:inline-block;
-  padding:13px 28px;
+  padding:15px 34px;
   border:1px solid var(--gold);
-  border-radius:5px;
-  color:var(--gold);
+  color:var(--gold2);
   text-decoration:none;
   font-weight:bold;
+  letter-spacing:1px;
+  transition:.3s;
 }
 
 .btn:hover{
   background:var(--gold);
   color:#000;
+  box-shadow:0 0 25px rgba(212,175,55,.3);
 }
 
 section{
-  max-width:1150px;
+  max-width:1200px;
   margin:auto;
-  padding:70px 20px;
+  padding:85px 20px;
 }
 
-.section-title{
+.title{
   text-align:center;
+  margin-bottom:45px;
+}
+
+.title small{
   color:var(--gold);
+  letter-spacing:4px;
+  font-size:11px;
+}
+
+.title h2{
+  margin:10px 0 0;
+  font-size:34px;
   letter-spacing:3px;
-  margin-bottom:40px;
 }
 
 .products{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:24px;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
 }
 
 .product{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
+  background:linear-gradient(145deg,#151515,#0b0b0b);
+  border:1px solid var(--line);
   overflow:hidden;
-  transition:.25s;
+  transition:.35s;
 }
 
 .product:hover{
-  transform:translateY(-5px);
+  transform:translateY(-8px);
   border-color:var(--gold);
+  box-shadow:0 15px 45px rgba(0,0,0,.5);
 }
 
-.product img{
+.product img,
+.no-image{
   width:100%;
-  height:280px;
+  height:330px;
   object-fit:cover;
   display:block;
-  background:#181818;
+  background:#111;
 }
 
 .no-image{
-  height:280px;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#181818;
-  color:#666;
-  letter-spacing:2px;
+  color:#555;
+  letter-spacing:3px;
 }
 
-.info{
-  padding:20px;
-}
+.info{padding:23px}
 
 .info h3{
   margin:0 0 10px;
-  font-size:20px;
+  font-size:21px;
+  letter-spacing:1px;
 }
 
 .description{
   color:var(--muted);
   font-size:14px;
-  line-height:1.5;
-  min-height:42px;
+  line-height:1.6;
+  min-height:44px;
 }
 
 .price{
   color:var(--gold2);
-  font-size:21px;
+  font-size:22px;
   font-weight:bold;
-  margin-top:16px;
+  margin-top:18px;
 }
 
 .stock{
-  color:#999;
+  color:#888;
   font-size:13px;
   margin-top:8px;
 }
 
 .view-btn{
   width:100%;
-  margin-top:16px;
-  padding:12px;
-  border:1px solid var(--gold);
-  border-radius:5px;
+  margin-top:18px;
+  padding:13px;
   background:transparent;
-  color:var(--gold);
+  border:1px solid var(--gold);
+  color:var(--gold2);
   font-weight:bold;
+  letter-spacing:1px;
   cursor:pointer;
 }
 
@@ -199,60 +244,76 @@ section{
   color:#000;
 }
 
-.loading,
-.empty,
-.error{
-  text-align:center;
-  padding:45px 20px;
-  color:#999;
-}
-
-.error{
-  color:#ff7777;
-}
-
-.about{
+.about-box{
+  max-width:800px;
+  margin:auto;
   text-align:center;
   color:#aaa;
-  line-height:1.8;
-  max-width:750px;
-  margin:auto;
+  line-height:1.9;
+  font-size:16px;
 }
 
 .contact{
+  border-top:1px solid var(--line);
   text-align:center;
-  border-top:1px solid var(--border);
 }
 
 footer{
+  border-top:1px solid var(--line);
   text-align:center;
-  padding:30px 15px;
-  border-top:1px solid var(--border);
+  padding:35px 15px;
   color:#777;
-  font-size:13px;
+  font-size:12px;
+  letter-spacing:1px;
 }
 
+.loading,.empty,.error{
+  text-align:center;
+  padding:45px;
+  color:#888;
+}
+
+.error{color:#ff7777}
+
 @media(max-width:650px){
-  header{
-    padding:15px 18px;
+
+  header{padding:10px 15px}
+
+  .brand img{
+    width:45px;
+    height:45px;
   }
 
-  .logo{
-    font-size:18px;
+  .brand-text{
+    font-size:14px;
+    letter-spacing:2px;
   }
 
   nav a{
-    margin-left:10px;
-    font-size:10px;
+    margin-left:8px;
+    font-size:9px;
   }
 
-  .hero{
-    min-height:65vh;
+  .hero{min-height:82vh}
+
+  .hero-logo{
+    width:145px;
+    height:145px;
+  }
+
+  .hero h1{
+    font-size:42px;
+    letter-spacing:4px;
+  }
+
+  .hero p{
+    font-size:10px;
+    letter-spacing:3px;
   }
 
   .product img,
   .no-image{
-    height:250px;
+    height:290px;
   }
 }
 </style>
@@ -261,7 +322,10 @@ footer{
 <body>
 
 <header>
-  <div class="logo">AR COLLECTION</div>
+  <div class="brand">
+    <img src="logo.png" alt="AR Collection Logo">
+    <div class="brand-text">AR COLLECTION</div>
+  </div>
 
   <nav>
     <a href="#home">HOME</a>
@@ -272,22 +336,25 @@ footer{
 </header>
 
 <section class="hero" id="home">
+  <div class="hero-content">
 
-  <h1>AR <span>COLLECTION</span></h1>
+    <img class="hero-logo" src="logo.png" alt="AR Collection">
 
-  <p>MEN'S FASHION • PREMIUM STYLE</p>
+    <h1>AR <span>COLLECTION</span></h1>
 
-  <a class="btn" href="#shop">
-    VIEW COLLECTION
-  </a>
+    <p>PREMIUM MEN'S FASHION • ROYAL STYLE</p>
 
+    <a class="btn" href="#shop">EXPLORE COLLECTION</a>
+
+  </div>
 </section>
 
 <section id="shop">
 
-  <h2 class="section-title">
-    OUR COLLECTION
-  </h2>
+  <div class="title">
+    <small>AR COLLECTION</small>
+    <h2>OUR COLLECTION</h2>
+  </div>
 
   <div id="loading" class="loading">
     Loading collection...
@@ -301,232 +368,161 @@ footer{
 
 <section id="about">
 
-  <h2 class="section-title">
-    ABOUT AR COLLECTION
-  </h2>
+  <div class="title">
+    <small>OUR STORY</small>
+    <h2>ABOUT AR COLLECTION</h2>
+  </div>
 
-  <div class="about">
-
+  <div class="about-box">
     <p>
-      AR Collection is a premium men's fashion brand
-      focused on modern style, quality and a royal look.
-      Explore our latest collection and discover your style.
+      AR Collection is a premium men's fashion brand focused
+      on modern style, quality and a royal look.
+      Discover carefully selected shirts, trousers and
+      fashion essentials designed for a confident style.
     </p>
-
   </div>
 
 </section>
 
 <section id="contact" class="contact">
 
-  <h2 class="section-title">
-    CONTACT
-  </h2>
+  <div class="title">
+    <small>GET IN TOUCH</small>
+    <h2>CONTACT</h2>
+  </div>
 
-  <div class="about">
-
+  <div class="about-box">
     <p>
       For product information and orders,
       please contact AR Collection directly.
     </p>
-
   </div>
 
 </section>
 
 <footer>
-  © 2026 AR COLLECTION — MEN'S FASHION
+  © 2026 AR COLLECTION — PREMIUM MEN'S FASHION
 </footer>
-
 
 <script>
 
-const SUPABASE_URL =
-"https://zlbezexsphxoqaldmbyg.supabase.co";
+const SUPABASE_URL="https://zlbezexsphxoqaldmbyg.supabase.co";
 
-const SUPABASE_ANON_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmV6ZXhzcGh4b3FhbGRtYnlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTYwNjYsImV4cCI6MjEwNDQzMjA2Nn0.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmV6ZXhzcGh4b3FhbGRtYnlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTYwNjYsImV4cCI6MjEwNDQzMjA2Nn0.FNMbidwkf4sO4HHDrlLBAsoADZaIwyZxTmMTDy2J5xc";
 
-const supabaseClient =
-window.supabase.createClient(
+const supabaseClient=window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
 
-
-const productsBox =
-document.getElementById("products");
-
-const loading =
-document.getElementById("loading");
-
-const errorBox =
-document.getElementById("error");
-
+const productsBox=document.getElementById("products");
+const loading=document.getElementById("loading");
+const errorBox=document.getElementById("error");
 
 function escapeHTML(value){
-
-  return String(value ?? "")
+  return String(value??"")
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
-
 }
-
 
 async function loadProducts(){
 
-  loading.style.display = "block";
-  errorBox.style.display = "none";
+  loading.style.display="block";
+  errorBox.style.display="none";
 
-  const {data,error} =
-    await supabaseClient
-      .from("products")
-      .select("*")
-      .order("created_at",{ascending:false});
+  const {data,error}=await supabaseClient
+    .from("products")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-
-  loading.style.display = "none";
-
+  loading.style.display="none";
 
   if(error){
-
     console.error(error);
-
-    errorBox.textContent =
-      "Collection load nahi ho rahi. Please try again.";
-
-    errorBox.style.display = "block";
-
+    errorBox.textContent="Collection load nahi ho rahi. Please try again.";
+    errorBox.style.display="block";
     return;
   }
 
-
-  if(!data || data.length === 0){
-
-    productsBox.innerHTML = `
+  if(!data || data.length===0){
+    productsBox.innerHTML=`
       <div class="empty">
-
-        <h3>
-          Collection Coming Soon
-        </h3>
-
-        <p>
-          Our new products will appear here soon.
-        </p>
-
+        <h3>Collection Coming Soon</h3>
+        <p>Our new products will appear here soon.</p>
       </div>
     `;
-
     return;
   }
 
+  productsBox.innerHTML=data.map(product=>{
 
-  productsBox.innerHTML =
-    data.map(product => {
+    const image=product.image_url
+      ? escapeHTML(product.image_url)
+      :"";
 
-      const image =
-        product.image_url
-        ? escapeHTML(product.image_url)
-        : "";
+    const stock=Number(product.stock||0);
 
+    return `
+      <article class="product">
 
-      const stock =
-        Number(product.stock || 0);
+        ${
+          image
+          ? `<img src="${image}" alt="${escapeHTML(product.name)}">`
+          : `<div class="no-image">AR COLLECTION</div>`
+        }
 
+        <div class="info">
 
-      return `
+          <h3>${escapeHTML(product.name)}</h3>
 
-        <article class="product">
-
-          ${
-            image
-
-            ? `
-              <img
-                src="${image}"
-                alt="${escapeHTML(product.name)}"
-              >
-            `
-
-            : `
-              <div class="no-image">
-                AR COLLECTION
-              </div>
-            `
-          }
-
-
-          <div class="info">
-
-            <h3>
-              ${escapeHTML(product.name)}
-            </h3>
-
-
-            <div class="description">
-              ${escapeHTML(product.description || "")}
-            </div>
-
-
-            <div class="price">
-              Rs. ${escapeHTML(product.price)}
-            </div>
-
-
-            <div class="stock">
-
-              ${
-                stock > 0
-
-                ? "In Stock: " + stock
-
-                : "Currently Out of Stock"
-              }
-
-            </div>
-
-
-            <button
-              class="view-btn"
-              onclick="showProduct(
-                '${escapeHTML(product.name)}',
-                '${escapeHTML(product.description || "")}',
-                '${escapeHTML(product.price)}'
-              )"
-            >
-              VIEW PRODUCT
-            </button>
-
+          <div class="description">
+            ${escapeHTML(product.description||"")}
           </div>
 
-        </article>
+          <div class="price">
+            Rs. ${escapeHTML(product.price)}
+          </div>
 
-      `;
+          <div class="stock">
+            ${
+              stock>0
+              ? "In Stock: "+stock
+              : "Currently Out of Stock"
+            }
+          </div>
 
-    }).join("");
+          <button
+            class="view-btn"
+            onclick="showProduct(
+              '${escapeHTML(product.name)}',
+              '${escapeHTML(product.description||"")}',
+              '${escapeHTML(product.price)}'
+            )">
+            VIEW PRODUCT
+          </button>
 
+        </div>
+
+      </article>
+    `;
+
+  }).join("");
 }
 
-
-function showProduct(
-  name,
-  description,
-  price
-){
+function showProduct(name,description,price){
 
   alert(
-    name +
-    "\n\n" +
-    description +
-    "\n\nPrice: Rs. " +
+    name+
+    "\\n\\n"+
+    description+
+    "\\n\\nPrice: Rs. "+
     price
   );
 
 }
-
 
 loadProducts();
 
